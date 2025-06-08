@@ -1,4 +1,4 @@
-package com.example.dailyrank.ui.groups
+package com.sapreme.dailyrank.ui.groups
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
