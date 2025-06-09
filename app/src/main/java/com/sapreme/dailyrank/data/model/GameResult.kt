@@ -29,6 +29,7 @@ sealed interface GameResult {
         override val succeeded: Boolean = true,
         val title: String,
         val hints: Int,
+        val doubleHints: Int,
         val words: Int
     ) : GameResult
 
