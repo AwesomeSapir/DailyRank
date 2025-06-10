@@ -5,13 +5,12 @@ import com.sapreme.dailyrank.data.parser.impl.ConnectionsResultParser
 import com.sapreme.dailyrank.data.parser.impl.MiniResultParser
 import com.sapreme.dailyrank.data.parser.impl.StrandsResultParser
 import com.sapreme.dailyrank.data.parser.impl.WordleResultParser
-import io.github.aakira.napier.Napier
-import java.time.LocalDate
+import timber.log.Timber
 
 object GameResultParserFactory {
 
     fun from(raw:String): GameResultParser<out GameResult>? {
-        Napier.d("Selecting parser for input: \"${raw.take(30)}...\"", tag = "ParserFactory")
+        Timber.d("Selecting parser for input: \"${raw.take(30)}...\"")
         val parser = when {
             raw.startsWith("Wordle") -> WordleResultParser()
             raw.startsWith("Connections") -> ConnectionsResultParser()
@@ -21,8 +20,8 @@ object GameResultParserFactory {
         }
 
         when {
-            parser != null -> Napier.i("Matched parser: ${parser::class.simpleName}", tag = "ParserFactory")
-            else -> Napier.w("No parser matched for input", tag = "ParserFactory")
+            parser != null -> Timber.i("Matched parser: ${parser::class.simpleName}")
+            else -> Timber.w("No parser matched for input")
         }
 
         return parser

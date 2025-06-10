@@ -3,6 +3,7 @@ package com.sapreme.dailyrank.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.repository.GameResultRepository
+import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
