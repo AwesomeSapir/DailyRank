@@ -8,7 +8,7 @@ class GameResultRepository(
 
 ) {
 
-    suspend fun submitResult(raw: String, date: LocalDate): Result<GameResult> {
+    fun submitResult(raw: String, date: LocalDate): Result<GameResult> {
         val parser = GameResultParserFactory.from(raw)?: return Result.failure(IllegalArgumentException("Unrecognized format"))
         val result = parser.parse(raw, date)?: return Result.failure(IllegalArgumentException("Failed to parse game result"))
         //remote.saveResult(result)
