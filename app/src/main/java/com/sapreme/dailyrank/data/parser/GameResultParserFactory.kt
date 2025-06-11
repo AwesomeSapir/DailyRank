@@ -10,7 +10,7 @@ import timber.log.Timber
 object GameResultParserFactory {
 
     fun from(raw:String): GameResultParser<out GameResult>? {
-        Timber.d("Selecting parser for input: \"${raw.take(30)}...\"")
+        Timber.d("Selecting parser for input: \"${raw}\"")
         val parser = when {
             raw.startsWith("Wordle") -> WordleResultParser()
             raw.startsWith("Connections") -> ConnectionsResultParser()

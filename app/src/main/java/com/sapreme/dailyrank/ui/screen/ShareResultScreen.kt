@@ -8,7 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.sapreme.dailyrank.data.model.GameResult
+import com.sapreme.dailyrank.data.repository.GameResultRepository
 import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 @Composable
@@ -44,6 +47,17 @@ private fun ParsedResultView(result: GameResult) {
     ){
         Text("Game: ${result::class.simpleName}", style = MaterialTheme.typography.titleMedium)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ShareResultScreenPreview() {
+    val fakeViewModel = object : GameResultViewModel(GameResultRepository()) {
+        override val parsed: StateFlow<GameResult?> =
+            MutableStateFlow(GameResult.WordleResult(puzzleId = 123, attempts = 4, succeeded = true, date = LocalDate.now()))
+    }
+
+    ShareResultScreen(viewModel = fakeViewModel)
 }
 
 @Preview(showBackground = true)

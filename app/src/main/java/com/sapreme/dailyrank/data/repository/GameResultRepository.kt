@@ -13,10 +13,18 @@ class GameResultRepository @Inject constructor(){
     fun submitResult(raw: String, date: LocalDate): Result<GameResult> {
         Timber.d("submitResult called")
 
-        val parser = GameResultParserFactory.from(raw)?: return Result.failure(IllegalArgumentException("Unrecognized format"))
+        val cleaned = when {
+            raw.startsWith("Archive") -> {
+                Timber.d("Detected archive header, stripping it")
+                raw.substringAfter("\n")
+            }
+            else -> raw
+        }
+
+        val parser = GameResultParserFactory.from(cleaned)?: return Result.failure(IllegalArgumentException("Unrecognized format"))
         Timber.i("Found parser: ${parser::class.simpleName}")
 
-        val result = parser.parse(raw, date)?: return Result.failure(IllegalArgumentException("Failed to parse game result"))
+        val result = parser.parse(cleaned, date)?: return Result.failure(IllegalArgumentException("Failed to parse game result"))
         Timber.i("Parsing succeeded: $result")
 
         //remote.saveResult(result)
