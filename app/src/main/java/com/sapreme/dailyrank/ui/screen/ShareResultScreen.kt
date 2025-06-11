@@ -39,25 +39,19 @@ fun ShareResultScreen(viewModel: GameResultViewModel) {
 
 @Composable
 private fun ParsedResultView(result: GameResult) {
-    Column (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ){
-        Text("Game: ${result::class.simpleName}", style = MaterialTheme.typography.titleMedium)
+    Card(
+        modifier = Modifier,
+        elevation = CardDefaults.elevatedCardElevation(),
+    ) {
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Text("Game: ${result::class.simpleName}", style = MaterialTheme.typography.titleMedium)
+        }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ShareResultScreenPreview() {
-    val fakeViewModel = object : GameResultViewModel(GameResultRepository()) {
-        override val parsed: StateFlow<GameResult?> =
-            MutableStateFlow(GameResult.WordleResult(puzzleId = 123, attempts = 4, succeeded = true, date = LocalDate.now()))
-    }
-
-    ShareResultScreen(viewModel = fakeViewModel)
 }
 
 @Preview(showBackground = true)
@@ -72,3 +66,15 @@ fun ShareResultPreview() {
         )
     )
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ShareResultScreenPreview() {
+    val fakeViewModel = object : GameResultViewModel(GameResultRepository()) {
+        override val parsed: StateFlow<GameResult?> =
+            MutableStateFlow(GameResult.WordleResult(puzzleId = 123, attempts = 4, succeeded = true, date = LocalDate.now()))
+    }
+
+    ShareResultScreen(viewModel = fakeViewModel)
+}
+

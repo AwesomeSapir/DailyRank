@@ -34,6 +34,7 @@ class ConnectionsResultParser : GameResultParser<ConnectionsResult> {
             date = date,
             succeeded = succeeded,
             attempts = attempts,
+            groupings = successes,
             mistakes = mistakes
         )
     }
