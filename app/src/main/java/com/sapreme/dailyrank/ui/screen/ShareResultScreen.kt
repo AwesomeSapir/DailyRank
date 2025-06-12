@@ -1,18 +1,29 @@
 package com.sapreme.dailyrank.ui.screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.repository.GameResultRepository
+import com.sapreme.dailyrank.ui.component.GameResultCard
+import com.sapreme.dailyrank.ui.preview.GameResultProvider
+import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
 
 @Composable
 fun ShareResultScreen(viewModel: GameResultViewModel) {
@@ -39,42 +50,42 @@ fun ShareResultScreen(viewModel: GameResultViewModel) {
 
 @Composable
 private fun ParsedResultView(result: GameResult) {
-    Card(
-        modifier = Modifier,
-        elevation = CardDefaults.elevatedCardElevation(),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = Spacing.l, vertical = Spacing.l),
+        contentAlignment = Alignment.Center
     ) {
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            Text("Game: ${result::class.simpleName}", style = MaterialTheme.typography.titleMedium)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Spacing.l)
+        ) {
+            GameResultCard(
+                result = result,
+                modifier = Modifier.wrapContentSize()
+            )
+            Button(
+                onClick = { },
+            ) {
+                Text(text = "Submit")
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ShareResultPreview() {
-    ParsedResultView(
-        result = GameResult.WordleResult(
-            puzzleId = 123,
-            date = LocalDate.now(),
-            succeeded = true,
-            attempts = 4
-        )
-    )
-}
 
-@Preview(showBackground = true)
+
+@Preview(
+    showBackground = true,
+    showSystemUi = false
+)
 @Composable
-fun ShareResultScreenPreview() {
-    val fakeViewModel = object : GameResultViewModel(GameResultRepository()) {
+fun Preview(
+    @PreviewParameter(GameResultProvider::class) result: GameResult
+) {
+    val viewModel = object : GameResultViewModel(GameResultRepository()) {
         override val parsed: StateFlow<GameResult?> =
-            MutableStateFlow(GameResult.WordleResult(puzzleId = 123, attempts = 4, succeeded = true, date = LocalDate.now()))
+            MutableStateFlow(result)
     }
-
-    ShareResultScreen(viewModel = fakeViewModel)
+    ShareResultScreen(viewModel = viewModel)
 }
-

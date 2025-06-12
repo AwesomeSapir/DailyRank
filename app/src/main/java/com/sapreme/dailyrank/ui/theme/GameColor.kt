@@ -1,14 +1,11 @@
 package com.sapreme.dailyrank.ui.theme
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import com.sapreme.dailyrank.data.model.GameResult
 
 object GameColor{
     data class Palette(
-        val title: Color,
-        val positive: Color,
-        val negative: Color
+        val title: Color
     )
 
     object Wordle{
@@ -24,35 +21,33 @@ object GameColor{
     }
 
     object Strands{
-        val Cyan = Color(0xffaae5f2)
+        val Cyan = Color(0xff83CEE8)
         val Yellow = Color(0xffefc929)
+        val DarkYellow = Color(0xffD5AF10)
     }
 
     object Mini{
         val Blue = Color(0xff6493e6)
+        val Black = Color.Black
+    }
+
+    object Misc{
+        val Red = Color(0xffC35A6C)
     }
 
 }
 
 fun GameResult.Type.colorPalette(): GameColor.Palette = when (this) {
     GameResult.Type.WORDLE -> GameColor.Palette(
-        title = GameColor.Wordle.Green,
-        positive = GameColor.Wordle.Green,
-        negative = GameColor.Wordle.Yellow
+        title = GameColor.Wordle.Green
     )
     GameResult.Type.CONNECTIONS -> GameColor.Palette(
-        title = GameColor.Connections.Purple,
-        positive = GameColor.Connections.Green,
-        negative = GameColor.Connections.Yellow
+        title = GameColor.Connections.Purple
     )
     GameResult.Type.STRANDS -> GameColor.Palette(
-        title = GameColor.Strands.Cyan,
-        positive = GameColor.Strands.Cyan,
-        negative = GameColor.Strands.Yellow
+        title = GameColor.Strands.Cyan
     )
     GameResult.Type.MINI -> GameColor.Palette(
-        title = GameColor.Mini.Blue,
-        positive = GameColor.Mini.Blue,
-        negative = Color.Black
+        title = GameColor.Mini.Black
     )
 }
