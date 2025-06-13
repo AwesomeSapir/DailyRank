@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class GameResultRepository @Inject constructor(){
 
-    fun submitResult(raw: String, date: LocalDate): Result<GameResult> {
+    fun parse(raw: String, date: LocalDate): Result<GameResult> {
         Timber.d("submitResult called")
 
         val cleaned = when {
@@ -27,9 +27,11 @@ class GameResultRepository @Inject constructor(){
         val result = parser.parse(cleaned, date)?: return Result.failure(IllegalArgumentException("Failed to parse game result"))
         Timber.i("Parsing succeeded: $result")
 
-        //remote.saveResult(result)
-        // Napier.d("Result saved remotely", tag = "GameResultRepo")
         return Result.success(result)
+    }
+
+    fun submit(gameResult: GameResult) {
+
     }
 
 }

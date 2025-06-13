@@ -1,8 +1,8 @@
 package com.sapreme.dailyrank.data.parser.impl
 
-import android.util.Log
 import com.sapreme.dailyrank.data.model.GameResult.ConnectionsResult
 import com.sapreme.dailyrank.data.parser.GameResultParser
+import timber.log.Timber
 import java.time.LocalDate
 
 class ConnectionsResultParser : GameResultParser<ConnectionsResult> {
@@ -10,17 +10,28 @@ class ConnectionsResultParser : GameResultParser<ConnectionsResult> {
     private val idRegex = Regex("""Puzzle #([\d,]+)""")
 
     override fun parse(raw: String, date: LocalDate): ConnectionsResult? {
-        val lines = raw.lineSequence()
+        val rawLines = raw.lineSequence()
             .map(String::trim)
             .filter(String::isNotEmpty)
-            .toList()
+            .toList().toList()
 
-        if (lines.size < 3 || lines[0] != "Connections") return null
+        if (rawLines.isEmpty() || !rawLines[0].startsWith("Connections", ignoreCase = true)) {
+            Timber.w(
+                "Share string not recognised (line0=${rawLines.getOrNull(0)}}, size=${rawLines.size}) – aborting"
+            )
+            return null
+        }
 
-        val idMatch = idRegex.find(lines[1]) ?: return null
-        val puzzleId = idMatch.groupValues[1].toInt()
+        val lines =
+            if (rawLines[0].equals("Connections", ignoreCase = true)) rawLines.drop(1) else rawLines
 
-        val rows = lines.drop(2)
+        val idMatch = idRegex.find(lines[0]) ?: run {
+            Timber.w("PuzzleId regex failed on: \"${lines[0]}\"")
+            return null
+        }
+        val puzzleId = idMatch.groupValues[1].replace(",", "").toIntOrNull() ?: return null
+
+        val rows = lines.drop(1)
         val attempts = rows.size
         val successes = rows.count { row ->
             val cps = row.codePoints().toArray()
@@ -38,6 +49,4 @@ class ConnectionsResultParser : GameResultParser<ConnectionsResult> {
             mistakes = mistakes
         )
     }
-
-
 }

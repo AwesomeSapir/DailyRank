@@ -21,7 +21,7 @@ open class GameResultViewModel @Inject constructor(
 
     fun parse(raw: String){
         viewModelScope.launch {
-            val result = repo.submitResult(raw, LocalDate.now()).getOrNull()
+            val result = repo.parse(raw, LocalDate.now()).getOrNull()
             _parsed.value = result
         }
     }

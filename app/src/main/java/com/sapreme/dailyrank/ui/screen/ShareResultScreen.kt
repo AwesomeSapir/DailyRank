@@ -80,7 +80,7 @@ private fun ParsedResultView(result: GameResult) {
     showSystemUi = false
 )
 @Composable
-fun Preview(
+fun ShareResultScreenPreview(
     @PreviewParameter(GameResultProvider::class) result: GameResult
 ) {
     val viewModel = object : GameResultViewModel(GameResultRepository()) {

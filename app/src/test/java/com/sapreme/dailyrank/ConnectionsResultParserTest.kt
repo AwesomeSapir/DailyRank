@@ -3,7 +3,11 @@ package com.sapreme.dailyrank
 import com.sapreme.dailyrank.data.parser.impl.ConnectionsResultParser
 import java.time.LocalDate
 import kotlin.test.Test
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ConnectionsResultParserTest {
 
@@ -75,6 +79,29 @@ class ConnectionsResultParserTest {
             assertTrue(succeeded)
             assertEquals(5, attempts)
             assertEquals(1, mistakes)
+            assertEquals(date, this.date)
+        }
+    }
+
+    @Test
+    fun `failed archive solve with 5 rows yields false succeeded and 4 mistakes`() {
+        val raw = """
+            Connections Puzzle #731
+            🟦🟨🟨🟨
+            🟨🟨🟨🟨
+            🟩🟦🟪🟦
+            🟪🟦🟦🟩
+            🟦🟪🟦🟦
+        """.trimIndent()
+
+        val result = parser.parse(raw, date)
+        assertNotNull(result)
+        with(result) {
+            assertEquals(731, puzzleId)
+            assertFalse(succeeded)
+            assertEquals(5, attempts)
+            assertEquals(1, groupings)
+            assertEquals(4, mistakes)
             assertEquals(date, this.date)
         }
     }
