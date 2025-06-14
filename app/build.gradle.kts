@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.kotlin.test)
     implementation(libs.hilt.android)
     implementation(libs.timber)
+    testImplementation(libs.junitparams)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
