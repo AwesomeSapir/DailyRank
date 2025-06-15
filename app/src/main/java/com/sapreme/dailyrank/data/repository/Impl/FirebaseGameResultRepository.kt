@@ -7,13 +7,14 @@ import com.sapreme.dailyrank.data.parser.GameResultParserFactory
 import com.sapreme.dailyrank.data.repository.GameResultRepository
 import timber.log.Timber
 import java.time.LocalDate
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseGameResultRepository : GameResultRepository {
-
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+class FirebaseGameResultRepository @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
+) : GameResultRepository {
 
     override suspend fun parse(raw: String, date: LocalDate): Result<GameResult> {
         Timber.d("parse called with:\n - raw: $raw\n - date: $date")
@@ -41,8 +42,8 @@ class FirebaseGameResultRepository : GameResultRepository {
 
     override suspend fun submit(gameResult: GameResult) {
         val userId = auth.currentUser?.uid ?: run {
-            Timber.tag("submit").e("No authenticated user")
-            return
+            Timber.e("No authenticated user")
+            throw IllegalStateException("User must be signed in before submitting a result")
         }
 
         val docId = "${gameResult.type.name.lowercase()}_${gameResult.puzzleId}"

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "780214999626",
+    "project_id": "dailyrank-4c4f4",
+    "storage_bucket": "dailyrank-4c4f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780214999626:android:0c23f51571d22c493464b3",
+        "android_client_info": {
+          "package_name": "com.sapreme.dailyrank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780214999626-md8ft133fu4t03v1g45opsrki2mviscc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByJ9nuMCf9A03Mhd7ozFDfiCKDVMTIiDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780214999626-md8ft133fu4t03v1g45opsrki2mviscc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
