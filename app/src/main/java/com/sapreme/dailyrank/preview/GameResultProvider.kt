@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.preview
+package com.sapreme.dailyrank.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.sapreme.dailyrank.data.model.GameResult

@@ -1,7 +1,7 @@
 package com.sapreme.dailyrank.parser
 
 import com.sapreme.dailyrank.data.model.GameResult
-import com.sapreme.dailyrank.data.repository.GameResultRepository
+import com.sapreme.dailyrank.data.repository.Impl.FirebaseGameResultRepository
 import com.sapreme.dailyrank.parser.cases.connectionsCases
 import com.sapreme.dailyrank.parser.cases.miniCases
 import com.sapreme.dailyrank.parser.cases.strandsCases
@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
 @RunWith(JUnitParamsRunner::class)
 class GameResultParsingTest {
 
-    private val repo = GameResultRepository()
+    private val repo = FirebaseGameResultRepository()
     private val today = LocalDate.now()
 
     @Test

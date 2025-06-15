@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.sapreme.dailyrank.data.model.GameResult
-import com.sapreme.dailyrank.ui.preview.GameResultProvider
+import com.sapreme.dailyrank.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.theme.GameColor
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.theme.Typography

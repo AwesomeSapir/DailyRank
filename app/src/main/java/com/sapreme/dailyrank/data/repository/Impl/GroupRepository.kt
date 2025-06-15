@@ -1,12 +1,13 @@
-package com.sapreme.dailyrank.data.repository
+package com.sapreme.dailyrank.data.repository.Impl
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
+import com.sapreme.dailyrank.data.repository.GroupRepository
 
-class GroupRepositoryImpl(
+class GroupRepository(
     private val remote: GroupRemoteDataSource = GroupRemoteDataSource(Firebase.firestore)
-) : GroupRepository{
+) : GroupRepository {
 
     override suspend fun createGroup(name: String, creatorId: String): String {
         return remote.createGroup(name, creatorId)
