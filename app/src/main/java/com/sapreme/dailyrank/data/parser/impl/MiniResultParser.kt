@@ -31,7 +31,8 @@ class MiniResultParser: GameResultParser<MiniResult> {
 
         return MiniResult(
             puzzleId = puzzleId,
-            date = date,
+            puzzleDate = parsedDate,
+            submitDate = date,
             duration = duration
         )
     }

@@ -23,7 +23,7 @@ val wordleCases = listOf(
         """.trimIndent(),
         GameResult.WordleResult(
             puzzleId = 1450,
-            date = today,
+            submitDate = today,
             succeeded = true,
             attempts = 4
         )
@@ -39,7 +39,7 @@ val wordleCases = listOf(
         """.trimIndent(),
         GameResult.WordleResult(
             puzzleId = 1450,
-            date = today,
+            submitDate = today,
             succeeded = true,
             attempts = 4
         )
@@ -58,7 +58,7 @@ val connectionsCases = listOf(
         """.trimIndent(),
         GameResult.ConnectionsResult(
             puzzleId = 731,
-            date = today,
+            submitDate = today,
             succeeded = false,
             attempts = 5,
             groupings = 1,
@@ -73,7 +73,8 @@ val miniCases = listOf(
         "I solved the 5/9/2025 New York Times Mini Crossword in 0:50!",
         GameResult.MiniResult(
             puzzleId = 20250509,
-            date = today,
+            puzzleDate = LocalDate.of(2025, 5, 9),
+            submitDate = today,
             duration = 50.seconds
         )
     ),
@@ -89,7 +90,7 @@ val strandsCases = listOf(
         """.trimIndent(),
         GameResult.StrandsResult(
             puzzleId = 457,
-            date = today,
+            submitDate = today,
             succeeded = true,
             title = "That's proprietary!",
             hints = 0,
