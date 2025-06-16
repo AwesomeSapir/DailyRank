@@ -22,7 +22,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -39,12 +38,12 @@ import com.sapreme.dailyrank.ui.util.puzzleLabel
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun GameResultCard(modifier: Modifier = Modifier, result: GameResult) {
+fun GameResultCard(modifier: Modifier = Modifier, result: GameResult, collapsed: Boolean = false) {
 
     val palette = remember(result.type) { result.type.colorPalette() }
 
-    val formattedDate = remember(result.date) {
-        result.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+    val formattedDate = remember(result.submitDate) {
+        result.submitDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
     }
 
     Card(
@@ -55,57 +54,56 @@ fun GameResultCard(modifier: Modifier = Modifier, result: GameResult) {
         )
     ) {
         Column(modifier = Modifier.padding(Spacing.l)) {
+            Text(
+                text = result.type.toString(),
+                style = Typography.titleLarge.copy(
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Black,
+                ),
+                color = palette.title,
+            )
             GameResultHeader(
                 succeeded = result.succeeded,
-                title = result.type.toString(),
-                label = result.puzzleLabel(),
-                color = palette.title
+                label = result.puzzleLabel()
             )
-            Spacer(Modifier.sizeS())
-            Text(
-                text = "Submitted on $formattedDate",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Gray,
-                textAlign = TextAlign.End,
-            )
-            Spacer(Modifier.sizeM())
-            when (result) {
-                is GameResult.WordleResult -> WordleResultContent(result)
-                is GameResult.ConnectionsResult -> ConnectionsResultContent(result)
-                is GameResult.MiniResult -> MiniResultContent(result)
-                is GameResult.StrandsResult -> StrandsResultContent(result)
+            if (!collapsed) {
+                Spacer(Modifier.sizeS())
+                when (result) {
+                    is GameResult.WordleResult -> WordleResultContent(result)
+                    is GameResult.ConnectionsResult -> ConnectionsResultContent(result)
+                    is GameResult.MiniResult -> MiniResultContent(result)
+                    is GameResult.StrandsResult -> StrandsResultContent(result)
+                }
+                Spacer(Modifier.sizeS())
+                Text(
+                    text = "Submitted on $formattedDate",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Gray,
+                )
             }
         }
     }
 }
 
 @Composable
-fun GameResultHeader(succeeded: Boolean, title: String, label: String, color: Color) {
+fun GameResultHeader(succeeded: Boolean, label: String) {
     Row(
+        modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.s)
+        horizontalArrangement = Arrangement.spacedBy(Spacing.m)
     ) {
-        Icon(
-            imageVector = if (succeeded) Icons.Default.CheckCircle else Icons.Default.Cancel,
-            contentDescription = if (succeeded) "Completed" else "Failed",
-            tint = if (succeeded) GameColor.Mini.Blue else GameColor.Misc.Red
-        )
-        Text(
-            text = title,
-            style = Typography.titleLarge.copy(
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Black,
-            ),
-            color = color,
-            modifier = Modifier.alignByBaseline()
-        )
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
             ),
-            modifier = Modifier.alignByBaseline()
+        )
+        Icon(
+            imageVector = if (succeeded) Icons.Default.CheckCircle else Icons.Default.Cancel,
+            contentDescription = if (succeeded) "Completed" else "Failed",
+            tint = if (succeeded) GameColor.Mini.Blue else GameColor.Misc.Red,
+            modifier = Modifier.sizeM()
         )
     }
 }
@@ -248,4 +246,13 @@ fun PreviewResultCard(
     result: GameResult
 ) {
     GameResultCard(result = result)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCollapsedResultCard(
+    @PreviewParameter(GameResultProvider::class)
+    result: GameResult
+) {
+    GameResultCard(result = result, collapsed = true)
 }

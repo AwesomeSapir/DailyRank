@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.share
+package com.sapreme.dailyrank.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
