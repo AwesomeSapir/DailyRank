@@ -2,6 +2,8 @@ package com.sapreme.dailyrank.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.sapreme.dailyrank.data.model.FilterKey
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.repository.GameResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,7 @@ enum class SubmissionState { Idle, Loading, Success, Error }
 
 @HiltViewModel
 open class GameResultViewModel @Inject constructor(
-    private val repo: GameResultRepository
+    private val repo: GameResultRepository,
 ) : ViewModel() {
 
     private val _parsed = MutableStateFlow<GameResult?>(null)
@@ -24,7 +26,30 @@ open class GameResultViewModel @Inject constructor(
     private val _submissionState = MutableStateFlow(SubmissionState.Idle)
     val submissionState: StateFlow<SubmissionState> = _submissionState
 
-    fun parse(raw: String){
+    private val resultsMap = mutableMapOf<FilterKey, MutableStateFlow<List<GameResult>>>()
+
+    val weeklyResultsByType: Map<GameResult.Type, StateFlow<List<GameResult>>> by lazy {
+        GameResult.Type.entries.associateWith { type ->
+            getResultsFor(FilterKey.Weekly(type))
+        }
+    }
+
+    fun getResultsFor(key: FilterKey): StateFlow<List<GameResult>> {
+        return resultsMap.getOrPut(key) {
+            MutableStateFlow<List<GameResult>>(emptyList()).also { fetchInto(key, it) }
+        }
+    }
+
+    private fun fetchInto(key: FilterKey, flow: MutableStateFlow<List<GameResult>>) {
+        val filter = key.toGameResultFilter()
+        viewModelScope.launch {
+            val results =
+                repo.getUserResultsBy(FirebaseAuth.getInstance().currentUser!!.uid, filter)
+            flow.value = results
+        }
+    }
+
+    fun parse(raw: String) {
         viewModelScope.launch {
             val result = repo.parse(raw, LocalDate.now()).getOrNull()
             _parsed.value = result
@@ -44,4 +69,6 @@ open class GameResultViewModel @Inject constructor(
             }
         }
     }
+
+
 }

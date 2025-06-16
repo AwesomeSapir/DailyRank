@@ -1,12 +1,14 @@
 package com.sapreme.dailyrank.data.remote
 
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.auth.User
 import com.sapreme.dailyrank.data.model.GameResult
+import com.sapreme.dailyrank.data.model.GameResultFilter
 
 interface GameResultRemoteDataSource {
 
-    suspend fun getUserGameResults(userId: String): List<GameResult>
+    suspend fun getUserGameResultsBy(
+        userId: String,
+        filter: GameResultFilter = GameResultFilter()
+    ): List<GameResult>
     suspend fun publishUserGameResult(userId: String, gameResult: GameResult)
 
 }

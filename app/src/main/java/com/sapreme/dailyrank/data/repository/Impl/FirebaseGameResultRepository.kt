@@ -2,9 +2,10 @@ package com.sapreme.dailyrank.data.repository.Impl
 
 import com.google.firebase.auth.FirebaseAuth
 import com.sapreme.dailyrank.data.model.GameResult
+import com.sapreme.dailyrank.data.model.GameResultFilter
 import com.sapreme.dailyrank.data.parser.GameResultParserFactory
-import com.sapreme.dailyrank.data.repository.GameResultRepository
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
+import com.sapreme.dailyrank.data.repository.GameResultRepository
 import timber.log.Timber
 import java.time.LocalDate
 import javax.inject.Inject
@@ -48,5 +49,12 @@ class FirebaseGameResultRepository @Inject constructor(
         }
 
         remoteDataSource.publishUserGameResult(userId, gameResult)
+    }
+
+    override suspend fun getUserResultsBy(
+        userId: String,
+        filter: GameResultFilter
+    ): List<GameResult> {
+        return remoteDataSource.getUserGameResultsBy(userId, filter)
     }
 }

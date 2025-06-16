@@ -1,6 +1,7 @@
 package com.sapreme.dailyrank.preview
 
 import com.sapreme.dailyrank.data.model.GameResult
+import com.sapreme.dailyrank.data.model.GameResultFilter
 import com.sapreme.dailyrank.data.repository.GameResultRepository
 import java.time.LocalDate
 
@@ -14,6 +15,15 @@ class FakeGameResultRepository(
         )
     }
 
-    override suspend fun submit(gameResult: GameResult) {}
+    override suspend fun submit(gameResult: GameResult) {
+
+    }
+
+    override suspend fun getUserResultsBy(
+        userId: String,
+        filter: GameResultFilter
+    ): List<GameResult> {
+        return emptyList()
+    }
 
 }
