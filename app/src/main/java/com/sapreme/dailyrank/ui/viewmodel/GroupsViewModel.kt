@@ -5,18 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.repository.GroupRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GroupsViewModel(
+@HiltViewModel
+class GroupsViewModel @Inject constructor(
     private val repo: GroupRepository
 ): ViewModel() {
 
     private val currentUserId: String = FirebaseAuth.getInstance().uid!!
 
-    val groups: StateFlow<List<Group>> =  repo.getMyGroups(currentUserId).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    val groups: StateFlow<List<Group>> =  repo.getGroups(currentUserId).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun createGroup(name: String) = viewModelScope.launch {
         repo.createGroup(name, currentUserId)

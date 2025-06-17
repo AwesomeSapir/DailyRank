@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.sapreme.dailyrank.data.model.GameResult
-import com.sapreme.dailyrank.data.repository.GameResultRepository
+import com.sapreme.dailyrank.preview.FakeGameResultRepository
+import com.sapreme.dailyrank.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.component.GameResultCard
-import com.sapreme.dailyrank.ui.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
+import com.sapreme.dailyrank.ui.viewmodel.SubmissionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -29,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun ShareResultScreen(viewModel: GameResultViewModel) {
 
     val parsed by viewModel.parsed.collectAsState()
+    val state by viewModel.submissionState.collectAsState()
 
     Surface(
         modifier = Modifier
@@ -42,14 +45,18 @@ fun ShareResultScreen(viewModel: GameResultViewModel) {
             }
 
             else -> {
-                ParsedResultView(result = parsed!!)
+                ParsedResultView(viewModel = viewModel, result = parsed!!, state = state)
             }
         }
     }
 }
 
 @Composable
-private fun ParsedResultView(result: GameResult) {
+private fun ParsedResultView(
+    viewModel: GameResultViewModel,
+    result: GameResult,
+    state: SubmissionState
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,15 +71,19 @@ private fun ParsedResultView(result: GameResult) {
                 result = result,
                 modifier = Modifier.wrapContentSize()
             )
-            Button(
-                onClick = { },
-            ) {
-                Text(text = "Submit")
+            when (state) {
+                SubmissionState.Loading -> CircularProgressIndicator()
+                SubmissionState.Success -> Text("✅ Submitted!")
+                SubmissionState.Error -> Text("❌ Failed to submit.")
+                SubmissionState.Idle ->
+                    Button(onClick = { viewModel.submit() }) {
+                        Text("Submit")
+                    }
             }
+
         }
     }
 }
-
 
 
 @Preview(
@@ -83,7 +94,8 @@ private fun ParsedResultView(result: GameResult) {
 fun ShareResultScreenPreview(
     @PreviewParameter(GameResultProvider::class) result: GameResult
 ) {
-    val viewModel = object : GameResultViewModel(GameResultRepository()) {
+    val viewModel =
+        object : GameResultViewModel(FakeGameResultRepository(predefinedResult = result)) {
         override val parsed: StateFlow<GameResult?> =
             MutableStateFlow(result)
     }

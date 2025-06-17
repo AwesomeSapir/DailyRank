@@ -14,9 +14,8 @@
         android:theme="@style/Theme.DailyRank"
         tools:targetApi="34">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.DashboardActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.DailyRank">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".ui.share.ShareResultActivity"
+            android:name=".ui.activity.ShareResultActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

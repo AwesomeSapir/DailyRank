@@ -47,7 +47,7 @@ class StrandsResultParser: GameResultParser<StrandsResult> {
 
         return StrandsResult(
             puzzleId = puzzleId,
-            date = date,
+            submitDate = date,
             title = title,
             hints = hints,
             doubleHints = doubleHints,

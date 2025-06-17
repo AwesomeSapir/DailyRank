@@ -42,7 +42,7 @@ class ConnectionsResultParser : GameResultParser<ConnectionsResult> {
 
         return ConnectionsResult(
             puzzleId = puzzleId,
-            date = date,
+            submitDate = date,
             succeeded = succeeded,
             attempts = attempts,
             groupings = successes,

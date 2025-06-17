@@ -23,7 +23,7 @@ class WordleResultParser: GameResultParser<WordleResult> {
 
         return WordleResult(
             puzzleId = puzzleId,
-            date = date,
+            submitDate = date,
             succeeded = succeeded,
             attempts = attempts
         )

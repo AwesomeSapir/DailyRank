@@ -1,9 +1,8 @@
 package com.sapreme.dailyrank.ui.theme
 
-import android.app.Activity
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -35,7 +34,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun DailyRankTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    //darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false, //TODO: Remove this line
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -52,7 +52,7 @@ fun DailyRankTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         content = content
     )
 }
