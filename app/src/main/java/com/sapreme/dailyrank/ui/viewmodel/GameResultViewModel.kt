@@ -34,6 +34,23 @@ open class GameResultViewModel @Inject constructor(
         }
     }
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
+    fun refreshAll() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            resultsMap.keys.toList().forEach { key ->
+                val filter = key.toGameResultFilter()
+                val results = repo.getUserResultsBy(
+                    FirebaseAuth.getInstance().currentUser!!.uid, filter
+                )
+                resultsMap[key]?.value = results
+            }
+            _isRefreshing.value = false
+        }
+    }
+
     fun getResultsFor(key: FilterKey): StateFlow<List<GameResult>> {
         return resultsMap.getOrPut(key) {
             MutableStateFlow<List<GameResult>>(emptyList()).also { fetchInto(key, it) }

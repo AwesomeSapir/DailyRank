@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +31,7 @@ import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewModel) {
 
@@ -37,21 +40,25 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewMode
         flow.collectAsState().value
     }
     val today = LocalDate.now()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Spacing.l)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(Spacing.xl)
+    Surface(modifier = modifier.fillMaxSize()) {
+        PullToRefreshBox(
+            modifier = Modifier.fillMaxSize(),
+            isRefreshing = isRefreshing,
+            onRefresh = { viewModel.refreshAll() }
         ) {
-            DailyGameResults(gameResults = todayResults)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = Spacing.l)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(Spacing.xl)
+            ) {
+                DailyGameResults(gameResults = todayResults, today = today)
 
-            WeeklyGameResults(today, weeklyResults)
+                WeeklyGameResults(today = today, weeklyResults = weeklyResults)
+            }
         }
     }
 }
@@ -86,11 +93,11 @@ private fun SectionHeader(
 }
 
 @Composable
-fun DailyGameResults(gameResults: List<GameResult>) {
+fun DailyGameResults(gameResults: List<GameResult>, today: LocalDate) {
     Column {
         SectionHeader(
             title = "Today",
-            subtitle = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+            subtitle = today.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         )
 
         if (gameResults.isEmpty()) {
@@ -160,6 +167,7 @@ fun WeeklyGameResultsPreview() {
 @Composable
 fun DailyGameResultsPreview() {
     DailyGameResults(
+        today = LocalDate.now(),
         gameResults = listOf(
             FakeGameResultRepository.wordleResults.first(),
             FakeGameResultRepository.connectionsResults.first(),
@@ -172,5 +180,5 @@ fun DailyGameResultsPreview() {
 @Preview(showBackground = true)
 @Composable
 fun EmptyDailyGameResultsPreview() {
-    DailyGameResults(gameResults = emptyList())
+    DailyGameResults(gameResults = emptyList(), today = LocalDate.now())
 }
