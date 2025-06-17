@@ -1,16 +1,12 @@
 package com.sapreme.dailyrank.data.remote.firebase
 
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sapreme.dailyrank.data.mapper.toDomain
 import com.sapreme.dailyrank.data.mapper.toDto
 import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
-import com.sapreme.dailyrank.ui.util.toFirestoreTimestamp
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
@@ -30,16 +26,15 @@ class FirebasePlayerRemoteDataSource @Inject constructor(
         awaitClose { sub.remove() }
     }
 
-    override suspend fun createPlayerIfNotExists(uid: String, nickname: String):Boolean {
-        val doc = firestore.collection("players")
-            .document(uid)
-            .get()
-            .await()
-        if (doc.exists()) return false
+    override suspend fun doesPlayerExist(uid: String): Boolean {
+        val doc = firestore.collection("players").document(uid).get().await()
+        return doc.exists()
+    }
 
+    override suspend fun createPlayer(uid: String, nickname: String) {
+        if (doesPlayerExist(uid)) return
         val dto: PlayerDto = Player(uid, nickname, LocalDate.now(), emptyList()).toDto()
         firestore.collection("players").document(uid).set(dto).await()
-        return true
     }
 
     override suspend fun joinGroup(uid: String, groupId: String) {

@@ -17,10 +17,6 @@ class PlayerViewModel @Inject constructor(
 ): ViewModel() {
     val player: StateFlow<Player?> = repo.observeCurrentPlayer().stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    fun createPlayer(nickname: String) = viewModelScope.launch {
-        repo.createPlayerIfNotExists(nickname)
-    }
-
     fun joinGroup(groupId: String) = viewModelScope.launch {
         repo.joinGroup(groupId)
     }

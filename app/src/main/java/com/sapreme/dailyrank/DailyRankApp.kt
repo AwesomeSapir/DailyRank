@@ -2,7 +2,6 @@ package com.sapreme.dailyrank
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -11,12 +10,6 @@ class DailyRankApp: Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
-        val auth = FirebaseAuth.getInstance()
-
-        auth.signInAnonymously()
-            .addOnSuccessListener { Timber.i("Signed in anonymously as ${auth.currentUser?.uid}") }
-            .addOnFailureListener { e -> Timber.e(e, "Anonymous auth failed") }
-
 
         Timber.plant(object : Timber.DebugTree() {
             override fun createStackElementTag(element: StackTraceElement): String {

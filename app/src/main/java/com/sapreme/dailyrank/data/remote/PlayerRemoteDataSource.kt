@@ -6,7 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface PlayerRemoteDataSource {
 
     fun observePlayer(uid: String): Flow<Player?>
-    suspend fun createPlayerIfNotExists(uid: String, nickname: String):Boolean
+    suspend fun doesPlayerExist(uid: String): Boolean
+    suspend fun createPlayer(uid: String, nickname: String)
     suspend fun joinGroup(uid: String, groupId: String)
     suspend fun leaveGroup(uid: String, groupId: String)
 
