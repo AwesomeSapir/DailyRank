@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.data.remote.Impl
+package com.sapreme.dailyrank.data.remote.firebase
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot

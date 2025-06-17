@@ -3,8 +3,8 @@ package com.sapreme.dailyrank.parser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sapreme.dailyrank.data.model.GameResult
-import com.sapreme.dailyrank.data.remote.Impl.FirebaseGameResultRemoteDataSource
-import com.sapreme.dailyrank.data.repository.Impl.FirebaseGameResultRepository
+import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
+import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultRepository
 import com.sapreme.dailyrank.parser.cases.connectionsCases
 import com.sapreme.dailyrank.parser.cases.miniCases
 import com.sapreme.dailyrank.parser.cases.strandsCases
@@ -22,7 +22,7 @@ import kotlin.test.assertTrue
 class GameResultParsingTest {
 
     private val repo = FirebaseGameResultRepository(
-        remoteDataSource = FirebaseGameResultRemoteDataSource(FirebaseFirestore.getInstance()),
+        remote = FirebaseGameResultRemoteDataSource(FirebaseFirestore.getInstance()),
         auth = FirebaseAuth.getInstance()
     )
     private val today = LocalDate.now()

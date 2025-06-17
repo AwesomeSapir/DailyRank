@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.data.repository.Impl
+package com.sapreme.dailyrank.data.repository.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.sapreme.dailyrank.data.model.GameResult
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FirebaseGameResultRepository @Inject constructor(
-    private val remoteDataSource: GameResultRemoteDataSource,
+    private val remote: GameResultRemoteDataSource,
     private val auth: FirebaseAuth
 ) : GameResultRepository {
 
@@ -48,13 +48,13 @@ class FirebaseGameResultRepository @Inject constructor(
             throw IllegalStateException("User must be signed in before submitting a result")
         }
 
-        remoteDataSource.publishUserGameResult(userId, gameResult)
+        remote.publishUserGameResult(userId, gameResult)
     }
 
     override suspend fun getUserResultsBy(
         userId: String,
         filter: GameResultFilter
     ): List<GameResult> {
-        return remoteDataSource.getUserGameResultsBy(userId, filter)
+        return remote.getUserGameResultsBy(userId, filter)
     }
 }
