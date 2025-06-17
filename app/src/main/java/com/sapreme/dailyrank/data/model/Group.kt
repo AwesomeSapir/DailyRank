@@ -1,11 +1,11 @@
 package com.sapreme.dailyrank.data.model
 
-import com.google.firebase.Timestamp
+import java.time.LocalDate
 
 data class Group(
     val id: String = "",
     val name: String = "",
     val createdBy: String = "",
     val members: List<String> = emptyList(),
-    val createdAt: Timestamp = Timestamp.now()
+    val createdAt: LocalDate = LocalDate.now()
 )

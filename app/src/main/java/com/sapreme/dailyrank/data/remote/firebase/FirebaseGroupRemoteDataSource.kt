@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 
 class FirebaseGroupRemoteDataSource(
     firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -24,7 +25,7 @@ class FirebaseGroupRemoteDataSource(
             name      = name,
             createdBy = creatorId,
             members   = listOf(creatorId),
-            createdAt = Timestamp.now()
+            createdAt = LocalDate.now()
         )
 
         docRef.set(group).await()

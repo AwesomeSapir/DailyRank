@@ -7,8 +7,11 @@ import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultReposito
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
+import com.sapreme.dailyrank.data.remote.firebase.FirebasePlayerRemoteDataSource
 import com.sapreme.dailyrank.data.repository.GroupRepository
+import com.sapreme.dailyrank.data.repository.PlayerRepository
 import com.sapreme.dailyrank.data.repository.firebase.FirebaseGroupRepository
+import com.sapreme.dailyrank.data.repository.firebase.FirebasePlayerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +20,19 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Provides
+    fun providePlayerRemoteDataSource(
+        firestore: FirebaseFirestore
+    ): FirebasePlayerRemoteDataSource = FirebasePlayerRemoteDataSource(firestore)
+
+    @Provides
+    fun providePlayerRepository(
+        remoteDataSource: FirebasePlayerRemoteDataSource,
+        firebaseAuth: FirebaseAuth
+    ): PlayerRepository {
+        return FirebasePlayerRepository(remoteDataSource, firebaseAuth)
+    }
 
     @Provides
     fun provideGroupRemoteDataSource(
