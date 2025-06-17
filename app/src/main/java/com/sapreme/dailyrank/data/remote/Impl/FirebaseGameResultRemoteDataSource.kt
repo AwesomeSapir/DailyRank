@@ -36,6 +36,8 @@ class FirebaseGameResultRemoteDataSource (
             query = query.whereLessThan("puzzleDate", it.plusDays(1).toFirestoreTimestamp())
         }
 
+        query = query.orderBy("puzzleDate", Query.Direction.DESCENDING)
+
         val snapshot = query.get().await()
 
         return@withContext snapshot.documents.mapNotNull { parseGameResult(it) }
