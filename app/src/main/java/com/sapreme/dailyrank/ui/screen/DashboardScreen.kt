@@ -47,12 +47,9 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewMode
                 .fillMaxWidth()
                 .padding(vertical = Spacing.l)
                 .verticalScroll(rememberScrollState()),
-            //contentPadding = PaddingValues(vertical = Spacing.l),
             verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
-            //item {
             DailyGameResults(gameResults = todayResults)
-            //}
 
             WeeklyGameResults(today, weeklyResults)
         }
@@ -60,32 +57,41 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewMode
 }
 
 @Composable
+private fun SectionHeader(
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.padding(horizontal = Spacing.l),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.m)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.SemiBold
+            ),
+            modifier = Modifier.alignByBaseline()
+        )
+        Text(
+            text = subtitle,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.SemiBold
+            ),
+            modifier = Modifier.alignByBaseline()
+        )
+    }
+}
+
+@Composable
 fun DailyGameResults(gameResults: List<GameResult>) {
     Column {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = Spacing.l),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.m)
-        ) {
-            Text(
-                text = "Today",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier
-                    .alignByBaseline()
-            )
-            Text(
-                text = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")),
-                style = MaterialTheme.typography.labelMedium.copy(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier
-                    .alignByBaseline()
-            )
-        }
+        SectionHeader(
+            title = "Today",
+            subtitle = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        )
 
         if (gameResults.isEmpty()) {
             Text(
@@ -119,36 +125,18 @@ fun WeeklyGameResults(
     Column(
         verticalArrangement = Arrangement.spacedBy(Spacing.m)
     ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = Spacing.l),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.m)
-        ) {
-            Text(
-                text = "Past Week",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier
-                    .alignByBaseline()
-            )
-            Text(
-                text = "${today.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))} - ${
-                    today.minusDays(6).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-                }",
-                style = MaterialTheme.typography.labelMedium.copy(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier
-                    .alignByBaseline()
-            )
-        }
+        SectionHeader(
+            title = "Past Week",
+            subtitle = "${today.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))} - ${
+                today.minusDays(
+                    6
+                ).format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+            }"
+        )
 
         GameResult.Type.entries.forEach { type ->
             GameResultRow(
-                title = type.toString(),
+                type = type,
                 gameResults = weeklyResults.getValue(type)
             )
         }
