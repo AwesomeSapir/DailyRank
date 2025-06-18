@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.sapreme.dailyrank.ui.component.PlayerCard
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.theme.sizeM
@@ -81,36 +82,14 @@ fun OnboardingContent(
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(Modifier.sizeL())
-            Text(
-                "Please choose a nickname",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-            Text(
-                "Your nickname will be displayed to other players.",
-                style = MaterialTheme.typography.labelSmall,
-            )
-            Spacer(Modifier.sizeL())
-            OutlinedTextField(
-                value = ui.nickname,
-                onValueChange = onNameChange,
-                singleLine = true,
-                isError = ui.error != null,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.bodyMedium,
+            Spacer(Modifier.sizeXL())
+
+            PlayerForm(
+                ui = ui,
+                onNameChange = onNameChange,
             )
 
-            ui.error?.let {
-                Spacer(Modifier.sizeM())
-                Text(
-                    it,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelMedium
-                )
-            }
-
-            Spacer(Modifier.sizeL())
+            Spacer(Modifier.sizeXL())
             Button(
                 onClick = onContinue,
                 enabled = ui.continueEnabled,
@@ -122,6 +101,44 @@ fun OnboardingContent(
                 )
                 else Text("Continue")
             }
+        }
+    }
+}
+
+@Composable
+fun PlayerForm(ui: OnboardingViewModel.UiState, onNameChange: (String) -> Unit,){
+    Column {
+        PlayerCard(
+            modifier = Modifier.fillMaxWidth(),
+            name = ui.nickname,
+            avatarUrl = ui.avatarUrl
+        )
+        Spacer(Modifier.sizeM())
+        Text(
+            "Please choose a nickname",
+            style = MaterialTheme.typography.headlineSmall,
+        )
+        Text(
+            "Your nickname will be displayed to other players.",
+            style = MaterialTheme.typography.labelSmall,
+        )
+        Spacer(Modifier.sizeM())
+        OutlinedTextField(
+            value = ui.nickname,
+            onValueChange = onNameChange,
+            singleLine = true,
+            isError = ui.error != null,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.bodyMedium,
+        )
+        ui.error?.let {
+            Spacer(Modifier.sizeM())
+            Text(
+                it,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelMedium
+            )
         }
     }
 }

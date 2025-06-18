@@ -21,6 +21,9 @@ napier = "2.7.1"
 timber = "5.0.1"
 junitJupiterParams = "4.13.2"
 junitparams = "1.1.1"
+coilCompose = "3.2.0"
+coilNetworkOkhttp = "3.2.0"
+coilSvg = "3.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +57,9 @@ napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version = "5.13.1" }
 junitparams = { group = "pl.pragmatists", name = "JUnitParams", version.ref = "junitparams" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coilSvg" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
