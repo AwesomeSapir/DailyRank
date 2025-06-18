@@ -12,8 +12,7 @@ object Spacing{
     val xl: Dp = 32.dp
 }
 
-fun Modifier.sizeXS() = this.then(Modifier.size(Spacing.s))
-fun Modifier.sizeS()  = this.then(Modifier.size(Spacing.m))
-fun Modifier.sizeM()  = this.then(Modifier.size(Spacing.l))
-fun Modifier.sizeL()  = this.then(Modifier.size(Spacing.xl))
+fun Modifier.sizeS() = this.then(Modifier.size(Spacing.s))
+fun Modifier.sizeM() = this.then(Modifier.size(Spacing.m))
+fun Modifier.sizeL() = this.then(Modifier.size(Spacing.l))
 fun Modifier.sizeXL() = this.then(Modifier.size(Spacing.xl))

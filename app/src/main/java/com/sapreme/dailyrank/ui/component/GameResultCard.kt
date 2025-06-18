@@ -32,8 +32,8 @@ import com.sapreme.dailyrank.ui.theme.GameColor
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.theme.Typography
 import com.sapreme.dailyrank.ui.theme.colorPalette
+import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.theme.sizeM
-import com.sapreme.dailyrank.ui.theme.sizeS
 import com.sapreme.dailyrank.ui.util.puzzleLabel
 import java.time.format.DateTimeFormatter
 
@@ -67,14 +67,14 @@ fun GameResultCard(modifier: Modifier = Modifier, result: GameResult, collapsed:
                 label = result.puzzleLabel()
             )
             if (!collapsed) {
-                Spacer(Modifier.sizeS())
+                Spacer(Modifier.sizeM())
                 when (result) {
                     is GameResult.WordleResult -> WordleResultContent(result)
                     is GameResult.ConnectionsResult -> ConnectionsResultContent(result)
                     is GameResult.MiniResult -> MiniResultContent(result)
                     is GameResult.StrandsResult -> StrandsResultContent(result)
                 }
-                Spacer(Modifier.sizeS())
+                Spacer(Modifier.sizeM())
                 Text(
                     text = "Submitted on $formattedDate",
                     style = MaterialTheme.typography.labelSmall,
@@ -103,7 +103,7 @@ fun GameResultHeader(succeeded: Boolean, label: String) {
             imageVector = if (succeeded) Icons.Default.CheckCircle else Icons.Default.Cancel,
             contentDescription = if (succeeded) "Completed" else "Failed",
             tint = if (succeeded) GameColor.Mini.Blue else GameColor.Misc.Red,
-            modifier = Modifier.sizeM()
+            modifier = Modifier.sizeL()
         )
     }
 }

@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sapreme.dailyrank.ui.theme.Spacing
+import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.theme.sizeM
-import com.sapreme.dailyrank.ui.theme.sizeS
 import com.sapreme.dailyrank.ui.theme.sizeXL
 import com.sapreme.dailyrank.ui.viewmodel.OnboardingViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -81,7 +81,7 @@ fun OnboardingContent(
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(Modifier.sizeM())
+            Spacer(Modifier.sizeL())
             Text(
                 "Please choose a nickname",
                 style = MaterialTheme.typography.headlineSmall,
@@ -90,7 +90,7 @@ fun OnboardingContent(
                 "Your nickname will be displayed to other players.",
                 style = MaterialTheme.typography.labelSmall,
             )
-            Spacer(Modifier.sizeM())
+            Spacer(Modifier.sizeL())
             OutlinedTextField(
                 value = ui.nickname,
                 onValueChange = onNameChange,
@@ -102,7 +102,7 @@ fun OnboardingContent(
             )
 
             ui.error?.let {
-                Spacer(Modifier.sizeS())
+                Spacer(Modifier.sizeM())
                 Text(
                     it,
                     color = MaterialTheme.colorScheme.error,
@@ -110,7 +110,7 @@ fun OnboardingContent(
                 )
             }
 
-            Spacer(Modifier.sizeM())
+            Spacer(Modifier.sizeL())
             Button(
                 onClick = onContinue,
                 enabled = ui.continueEnabled,
