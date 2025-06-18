@@ -1,13 +1,13 @@
 package com.sapreme.dailyrank.data.repository.firebase
 
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
 import com.sapreme.dailyrank.data.repository.GroupRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FirebaseGroupRepository @Inject constructor(
-    private val remote: FirebaseGroupRemoteDataSource
+    private val remote: GroupRemoteDataSource
 ) : GroupRepository {
 
     override suspend fun createGroup(name: String, creatorId: String): String {

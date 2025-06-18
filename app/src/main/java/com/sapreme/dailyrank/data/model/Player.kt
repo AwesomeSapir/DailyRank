@@ -5,6 +5,6 @@ import java.time.LocalDate
 data class Player(
     val uid: String,
     val nickname: String,
-    val createdAt: LocalDate,
+    val createdAt: LocalDate = LocalDate.now(),
     val groups: List<String> = emptyList(),
 )
