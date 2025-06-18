@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.svg)
+    implementation(libs.coil)
     testImplementation(libs.junitparams)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)

@@ -24,6 +24,7 @@ junitparams = "1.1.1"
 coilCompose = "3.2.0"
 coilNetworkOkhttp = "3.2.0"
 coilSvg = "3.2.0"
+coil = "3.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,6 +61,7 @@ junitparams = { group = "pl.pragmatists", name = "JUnitParams", version.ref = "j
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coilSvg" }
+coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

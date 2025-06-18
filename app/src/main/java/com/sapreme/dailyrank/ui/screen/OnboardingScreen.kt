@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sapreme.dailyrank.ui.component.PlayerCard
+import com.sapreme.dailyrank.ui.theme.GameColor
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.theme.sizeM
 import com.sapreme.dailyrank.ui.theme.sizeXL
 import com.sapreme.dailyrank.ui.viewmodel.OnboardingViewModel
@@ -80,8 +80,17 @@ fun OnboardingContent(
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Bold
-                )
+                ),
+                color = GameColor.Mini.Blue
             )
+            Spacer(Modifier.sizeXL())
+
+            PlayerCard(
+                modifier = Modifier.fillMaxWidth(),
+                name = ui.nickname,
+                avatarUrl = ui.avatarUrl
+            )
+
             Spacer(Modifier.sizeXL())
 
             PlayerForm(
@@ -106,14 +115,8 @@ fun OnboardingContent(
 }
 
 @Composable
-fun PlayerForm(ui: OnboardingViewModel.UiState, onNameChange: (String) -> Unit,){
+fun PlayerForm(ui: OnboardingViewModel.UiState, onNameChange: (String) -> Unit) {
     Column {
-        PlayerCard(
-            modifier = Modifier.fillMaxWidth(),
-            name = ui.nickname,
-            avatarUrl = ui.avatarUrl
-        )
-        Spacer(Modifier.sizeM())
         Text(
             "Please choose a nickname",
             style = MaterialTheme.typography.headlineSmall,
@@ -148,6 +151,18 @@ fun PlayerForm(ui: OnboardingViewModel.UiState, onNameChange: (String) -> Unit,)
 fun OnboardingContentSavingPreview() {
     val fakeState =
         OnboardingViewModel.UiState(nickname = "Sapir", isSaving = true)
+    OnboardingContent(
+        ui = fakeState,
+        onNameChange = {},
+        onContinue = {}
+    )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun OnboardingContentEmptyPreview() {
+    val fakeState =
+        OnboardingViewModel.UiState(nickname = "", isSaving = true)
     OnboardingContent(
         ui = fakeState,
         onNameChange = {},
