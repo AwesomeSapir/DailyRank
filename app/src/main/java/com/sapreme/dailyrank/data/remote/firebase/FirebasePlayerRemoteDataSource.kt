@@ -1,53 +1,31 @@
 package com.sapreme.dailyrank.data.remote.firebase
 
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sapreme.dailyrank.data.mapper.toDomain
-import com.sapreme.dailyrank.data.mapper.toDto
-import com.sapreme.dailyrank.data.model.Player
+import com.google.firebase.firestore.toObject
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
-import javax.inject.Inject
 
-class FirebasePlayerRemoteDataSource @Inject constructor(
+class FirebasePlayerRemoteDataSource(
     private val firestore: FirebaseFirestore
 ) : PlayerRemoteDataSource {
 
-    override fun observePlayer(uid: String) = callbackFlow {
-        val sub = firestore.collection("players")
-            .document(uid)
-            .addSnapshotListener { snap, err ->
-                if (err != null) close(err)
-                else trySend(snap?.toObject(PlayerDto::class.java)?.toDomain())
+    private fun doc(uid: String) = firestore.collection("players").document(uid)
+
+    override fun observePlayer(uid: String): Flow<PlayerDto?> =
+        callbackFlow {
+            val reg = doc(uid).addSnapshotListener { snap, _ ->
+                trySend(snap?.toObject<PlayerDto>())
             }
-        awaitClose { sub.remove() }
-    }
+            awaitClose { reg.remove() }
+        }
 
-    override suspend fun doesPlayerExist(uid: String): Boolean {
-        val doc = firestore.collection("players").document(uid).get().await()
-        return doc.exists()
-    }
+    override suspend fun getPlayer(uid: String): PlayerDto? =
+        doc(uid).get().await().toObject()
 
-    override suspend fun createPlayer(uid: String, nickname: String) {
-        if (doesPlayerExist(uid)) return
-        val dto: PlayerDto = Player(uid, nickname, LocalDate.now(), emptyList()).toDto()
-        firestore.collection("players").document(uid).set(dto).await()
-    }
-
-    override suspend fun joinGroup(uid: String, groupId: String) {
-        firestore.runBatch { b ->
-            b.update(firestore.collection("players").document(uid), "groups", FieldValue.arrayUnion(groupId))
-            b.update(firestore.collection("groups").document(groupId), "members.$uid", "member")
-        }.await()
-    }
-
-    override suspend fun leaveGroup(uid: String, groupId: String) {
-        firestore.runBatch { b ->
-            b.update(firestore.collection("players").document(uid), "groups", FieldValue.arrayRemove(groupId))
-            b.update(firestore.collection("groups").document(groupId), "members.$uid", FieldValue.delete())
-        }.await()
+    override suspend fun createPlayer(dto: PlayerDto) {
+        doc(dto.uid).set(dto).await()
     }
 }

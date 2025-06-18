@@ -1,15 +1,17 @@
 package com.sapreme.dailyrank.data.di
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sapreme.dailyrank.data.repository.GameResultRepository
-import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultRepository
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
+import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
+import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebasePlayerRemoteDataSource
+import com.sapreme.dailyrank.data.repository.GameResultRepository
 import com.sapreme.dailyrank.data.repository.GroupRepository
 import com.sapreme.dailyrank.data.repository.PlayerRepository
+import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultRepository
 import com.sapreme.dailyrank.data.repository.firebase.FirebaseGroupRepository
 import com.sapreme.dailyrank.data.repository.firebase.FirebasePlayerRepository
 import dagger.Module
@@ -24,27 +26,24 @@ object RepositoryModule {
     @Provides
     fun providePlayerRemoteDataSource(
         firestore: FirebaseFirestore
-    ): FirebasePlayerRemoteDataSource = FirebasePlayerRemoteDataSource(firestore)
+    ): PlayerRemoteDataSource = FirebasePlayerRemoteDataSource(firestore)
 
     @Provides
     fun providePlayerRepository(
-        remoteDataSource: FirebasePlayerRemoteDataSource,
-        firebaseAuth: FirebaseAuth
+        remoteDataSource: PlayerRemoteDataSource,
     ): PlayerRepository {
-        return FirebasePlayerRepository(remoteDataSource, firebaseAuth)
+        return FirebasePlayerRepository(remoteDataSource)
     }
 
     @Provides
     fun provideGroupRemoteDataSource(
         firestore: FirebaseFirestore
-    ): FirebaseGroupRemoteDataSource = FirebaseGroupRemoteDataSource(firestore)
+    ): GroupRemoteDataSource = FirebaseGroupRemoteDataSource(firestore)
 
     @Provides
     fun provideGroupRepository(
-        remoteDataSource: FirebaseGroupRemoteDataSource,
-    ): GroupRepository {
-        return FirebaseGroupRepository(remoteDataSource)
-    }
+        remoteDataSource: GroupRemoteDataSource,
+    ): GroupRepository = FirebaseGroupRepository(remoteDataSource)
 
     @Provides
     fun provideGameResultRemoteDataSource(
@@ -54,12 +53,7 @@ object RepositoryModule {
     @Provides
     fun provideGameResultRepository(
         remoteDataSource: GameResultRemoteDataSource,
-        firebaseAuth: FirebaseAuth
-    ): GameResultRepository {
-        return FirebaseGameResultRepository(
-            remoteDataSource,
-            firebaseAuth
-        )
-    }
+        authManager: FirebaseAuthManager
+    ): GameResultRepository = FirebaseGameResultRepository(remoteDataSource, authManager)
 
 }
