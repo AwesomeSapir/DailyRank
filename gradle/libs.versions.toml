@@ -25,6 +25,8 @@ coilCompose = "3.2.0"
 coilNetworkOkhttp = "3.2.0"
 coilSvg = "3.2.0"
 coil = "3.2.0"
+coreSplashscreen = "1.0.1"
+navigationCompose = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +64,8 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coilSvg" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

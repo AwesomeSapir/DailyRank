@@ -4,8 +4,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 
 data class PlayerDto(
-    @DocumentId val uid: String,
-    val nickname: String,
-    val groups: List<String> = emptyList(),
-    val createdAt: Timestamp
+    @DocumentId var uid: String = "",
+    var nickname: String = "",
+    var groups: List<String> = emptyList(),
+    var createdAt: Timestamp = Timestamp.now()
 )

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.DailyRank"
         tools:targetApi="34">
         <activity
-            android:name=".ui.activity.DashboardActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.DailyRank">
             <intent-filter>

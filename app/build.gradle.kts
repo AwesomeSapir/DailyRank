@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.svg)
     implementation(libs.coil)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junitparams)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)

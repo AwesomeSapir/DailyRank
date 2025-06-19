@@ -10,14 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.sapreme.dailyrank.ui.viewmodel.Destination
 import com.sapreme.dailyrank.ui.viewmodel.SplashViewModel
 
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    navController: NavHostController
+    onMain: () -> Unit,
+    onOnboarding: () -> Unit,
 ) {
     val destination by viewModel.destination.collectAsState()
 
@@ -31,14 +31,8 @@ fun SplashScreen(
     } else {
         LaunchedEffect(destination) {
             when (destination) {
-                Destination.ONBOARDING -> navController.navigate("onboarding") {
-                    popUpTo("splash") { inclusive = true }
-                }
-
-                Destination.MAIN -> navController.navigate("main") {
-                    popUpTo("splash") { inclusive = true }
-                }
-
+                Destination.ONBOARDING -> onOnboarding()
+                Destination.MAIN -> onMain()
                 else -> {}
             }
         }

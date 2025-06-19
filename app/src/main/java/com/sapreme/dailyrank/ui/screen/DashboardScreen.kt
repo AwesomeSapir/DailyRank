@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.FilterKey
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.FakeGameResultRepository
@@ -33,7 +34,10 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewModel) {
+fun DashboardScreen(
+    modifier: Modifier = Modifier,
+    viewModel: GameResultViewModel = hiltViewModel()
+) {
 
     val todayResults by viewModel.getResultsFor(FilterKey.Today).collectAsState()
     val weeklyResults = viewModel.weeklyResultsByType.mapValues { (type, flow) ->
