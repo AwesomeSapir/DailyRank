@@ -1,6 +1,6 @@
 package com.sapreme.dailyrank.data.remote
 
-import com.sapreme.dailyrank.data.remote.firebase.PlayerDto
+import com.sapreme.dailyrank.data.remote.firebase.dto.PlayerDto
 import kotlinx.coroutines.flow.Flow
 
 interface PlayerRemoteDataSource {

@@ -19,7 +19,8 @@ class GroupsViewModel @Inject constructor(
 
     private val currentUserId: String = FirebaseAuth.getInstance().uid!!
 
-    val groups: StateFlow<List<Group>> =  repo.getGroups(currentUserId).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    val groups: StateFlow<List<Group>> = repo.observeGroups(currentUserId)
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun createGroup(name: String) = viewModelScope.launch {
         repo.createGroup(name, currentUserId)

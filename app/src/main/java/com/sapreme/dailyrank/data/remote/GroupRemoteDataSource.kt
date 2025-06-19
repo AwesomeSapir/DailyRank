@@ -1,6 +1,6 @@
 package com.sapreme.dailyrank.data.remote
 
-import com.sapreme.dailyrank.data.model.Group
+import com.sapreme.dailyrank.data.remote.firebase.dto.GroupDto
 import kotlinx.coroutines.flow.Flow
 
 interface GroupRemoteDataSource {
@@ -9,6 +9,8 @@ interface GroupRemoteDataSource {
 
     suspend fun joinGroup(groupId: String, userId: String)
 
-    fun observeUserGroups(userId: String): Flow<List<Group>>
+    suspend fun leaveGroup(groupId: String, userId: String)
+
+    fun observeGroups(userId: String): Flow<List<GroupDto>>
 
 }

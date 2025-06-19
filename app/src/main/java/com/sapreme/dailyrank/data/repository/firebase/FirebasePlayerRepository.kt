@@ -2,8 +2,7 @@ package com.sapreme.dailyrank.data.repository.firebase
 
 import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
-import com.sapreme.dailyrank.data.remote.firebase.mapper.toDomain
-import com.sapreme.dailyrank.data.remote.firebase.mapper.toDto
+import com.sapreme.dailyrank.data.remote.firebase.dto.toDto
 import com.sapreme.dailyrank.data.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

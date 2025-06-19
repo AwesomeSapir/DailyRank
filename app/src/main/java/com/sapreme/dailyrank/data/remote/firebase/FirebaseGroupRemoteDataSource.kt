@@ -1,53 +1,80 @@
 package com.sapreme.dailyrank.data.remote.firebase
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.firebase.dto.GroupDto
+import com.sapreme.dailyrank.data.remote.firebase.dto.MemberDto
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
 
 class FirebaseGroupRemoteDataSource(
-    firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-): GroupRemoteDataSource {
+    private val firestore: FirebaseFirestore
+) : GroupRemoteDataSource {
 
-    private val groupsCol = firestore.collection("groups")
+    private fun groupDoc(gid: String) = firestore.collection("groups").document(gid)
+    private fun membersColl(gid: String) = groupDoc(gid).collection("members")
 
     override suspend fun createGroup(name: String, creatorId: String): String {
-        val docRef = groupsCol.document()
-        val id = docRef.id
+        val gid = firestore.collection("groups").document().id
+        val now = Timestamp.now()
 
-        val group = Group(
-            id        = id,
-            name      = name,
-            createdBy = creatorId,
-            members   = listOf(creatorId),
-            createdAt = LocalDate.now()
-        )
+        firestore.runBatch { batch ->
+            batch.set(
+                groupDoc(gid),
+                GroupDto(
+                    id = gid,
+                    name = name,
+                    createdBy = creatorId,
+                    createdAt = now,
+                )
+            )
 
-        docRef.set(group).await()
-        return id
+            batch.set(
+                membersColl(gid).document(creatorId),
+                MemberDto(
+                    uid = creatorId,
+                    joinedAt = now
+                )
+            )
+        }.await()
+
+        return gid
     }
 
     override suspend fun joinGroup(groupId: String, userId: String) {
-        groupsCol.document(groupId)
-            .update("members", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
-            .await()
+        firestore.runBatch { batch ->
+            batch.update(groupDoc(groupId), "memberUids", FieldValue.arrayUnion(userId))
+
+            batch.set(
+                membersColl(groupId).document(userId), MemberDto(
+                    uid = userId,
+                    joinedAt = Timestamp.now()
+                )
+            )
+        }.await()
     }
 
-    override fun observeUserGroups(userId: String): Flow<List<Group>> = callbackFlow {
-        val subscription = groupsCol
-            .whereArrayContains("members", userId)
-            .addSnapshotListener { snap, err ->
-                if (err != null) { close(err); return@addSnapshotListener }
-                val groups = snap?.documents?.mapNotNull { it.toObject(Group::class.java)?.copy(id=it.id) }
-                trySend(groups ?: emptyList())
-            }
-        awaitClose { subscription.remove() }
+    override suspend fun leaveGroup(groupId: String, userId: String) {
+        firestore.runBatch { batch ->
+            batch.update(groupDoc(groupId), "memberUids", FieldValue.arrayRemove(userId))
+
+            batch.delete(membersColl(groupId).document(userId))
+        }.await()
     }
+
+    override fun observeGroups(userId: String): Flow<List<GroupDto>> =
+        callbackFlow {
+            val reg = firestore.collection("groups")
+                .whereArrayContains("memberUids", userId)
+                .addSnapshotListener { snap, _ ->
+                    trySend(snap?.toObjects(GroupDto::class.java) ?: emptyList())
+                }
+            awaitClose { reg.remove() }
+        }
 
 
 }
