@@ -12,17 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.sapreme.dailyrank.R
-import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.util.avatarUrl
-import java.time.LocalDate
 
 @Composable
 fun PlayerCard(modifier: Modifier = Modifier, avatarUrl: String, name: String) {
@@ -44,15 +40,17 @@ fun PlayerCard(modifier: Modifier = Modifier, avatarUrl: String, name: String) {
                 error = painterResource(R.drawable.ic_avatar_placeholder),
                 modifier = Modifier.size(64.dp)
             )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(Spacing.m)
-            ) {
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold
+            if (name.isNotBlank()) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(Spacing.m)
+                ) {
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -64,6 +62,16 @@ fun PlayerCardPreview() {
     PlayerCard(
         avatarUrl = "",
         name = "Sapreme",
+        modifier = Modifier.padding(Spacing.m)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EmptyPlayerCardPreview() {
+    PlayerCard(
+        avatarUrl = "",
+        name = "",
         modifier = Modifier.padding(Spacing.m)
     )
 }

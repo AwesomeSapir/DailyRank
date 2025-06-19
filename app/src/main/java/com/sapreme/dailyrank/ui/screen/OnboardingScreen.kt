@@ -83,7 +83,7 @@ fun OnboardingContent(
             Spacer(Modifier.sizeXL())
 
             PlayerCard(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 name = ui.nickname,
                 avatarUrl = ui.avatarUrl
             )
@@ -96,16 +96,18 @@ fun OnboardingContent(
             )
 
             Spacer(Modifier.sizeXL())
-            Button(
-                onClick = onContinue,
-                enabled = ui.continueEnabled,
-                modifier = Modifier
-            ) {
-                if (ui.isSaving) CircularProgressIndicator(
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.sizeXL()
-                )
-                else Text("Continue")
+            if (ui.continueEnabled || ui.isSaving) {
+                Button(
+                    onClick = onContinue,
+                    enabled = ui.continueEnabled,
+                    modifier = Modifier
+                ) {
+                    if (ui.isSaving) CircularProgressIndicator(
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.sizeXL()
+                    )
+                    else Text("Continue")
+                }
             }
         }
     }
@@ -126,6 +128,7 @@ fun PlayerForm(ui: OnboardingViewModel.UiState, onNameChange: (String) -> Unit) 
         OutlinedTextField(
             value = ui.nickname,
             onValueChange = onNameChange,
+            label = { Text("Nickname") },
             singleLine = true,
             isError = ui.error != null,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -159,7 +162,7 @@ fun OnboardingContentSavingPreview() {
 @Composable
 fun OnboardingContentEmptyPreview() {
     val fakeState =
-        OnboardingViewModel.UiState(nickname = "", isSaving = true)
+        OnboardingViewModel.UiState(nickname = "", isSaving = false)
     OnboardingContent(
         ui = fakeState,
         onNameChange = {},
@@ -183,7 +186,7 @@ fun OnboardingContentDefaultPreview() {
 @Composable
 fun OnboardingContentErrorPreview() {
     val fakeState =
-        OnboardingViewModel.UiState(nickname = "Sapir", isSaving = false, error = "Error message")
+        OnboardingViewModel.UiState(nickname = "Sapir!", isSaving = false, error = "Error")
     OnboardingContent(
         ui = fakeState,
         onNameChange = {},

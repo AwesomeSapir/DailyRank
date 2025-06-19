@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -26,7 +27,8 @@ class OnboardingViewModel @Inject constructor(
         val isSaving: Boolean = false,
         val error: String? = null
     ) {
-        val continueEnabled: Boolean get() = nickname.isNotBlank() && !isSaving
+        val isValidLocal get() = nickname.matches(Regex("^[A-Za-z0-9_]{3,20}$"))
+        val continueEnabled: Boolean get() = isValidLocal && !isSaving
     }
 
     private val _state = MutableStateFlow(UiState())
@@ -45,7 +47,14 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun onNicknameChange(newName: String) {
-        _state.value = _state.value.copy(nickname = newName.take(25), error = null)
+        val trimmed = newName.take(25)
+        _state.update {
+            it.copy(
+                nickname = trimmed,
+                error = if (trimmed.matches(Regex("^[A-Za-z0-9_]{3,10}$")))
+                    null else "Nicknames must contain only 3-20 letters, numbers or _"
+            )
+        }
     }
 
     fun savePlayer() = viewModelScope.launch {
