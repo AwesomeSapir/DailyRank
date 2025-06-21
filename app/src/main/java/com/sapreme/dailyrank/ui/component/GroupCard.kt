@@ -78,7 +78,8 @@ fun GroupCardPreview() {
         Player(uid = "u3", nickname = "Charlie"),
         Player(uid = "u4", nickname = "Andrey"),
         Player(uid = "u5", nickname = "Sapir"),
-        Player(uid = "u6", nickname = "Nicole")
+        Player(uid = "u6", nickname = "Nicole"),
+        Player(uid = "u7", nickname = "Yonatan")
     )
 
     Surface(modifier = Modifier.padding(Spacing.m)) {
