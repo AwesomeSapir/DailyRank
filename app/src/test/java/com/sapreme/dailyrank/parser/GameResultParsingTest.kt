@@ -3,6 +3,7 @@ package com.sapreme.dailyrank.parser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sapreme.dailyrank.data.model.GameResult
+import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
 import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultRepository
 import com.sapreme.dailyrank.parser.cases.connectionsCases
@@ -23,7 +24,7 @@ class GameResultParsingTest {
 
     private val repo = FirebaseGameResultRepository(
         remote = FirebaseGameResultRemoteDataSource(FirebaseFirestore.getInstance()),
-        auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuthManager(FirebaseAuth.getInstance())
     )
     private val today = LocalDate.now()
 

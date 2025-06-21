@@ -39,6 +39,7 @@ fun DashboardScreen(
     viewModel: GameResultViewModel = hiltViewModel()
 ) {
 
+
     val todayResults by viewModel.getResultsFor(FilterKey.Today).collectAsState()
     val weeklyResults = viewModel.weeklyResultsByType.mapValues { (type, flow) ->
         flow.collectAsState().value
@@ -55,7 +56,6 @@ fun DashboardScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = Spacing.l)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(Spacing.xl)
             ) {
@@ -65,6 +65,7 @@ fun DashboardScreen(
             }
         }
     }
+
 }
 
 @Composable

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.ui.component.PlayerCard
 import com.sapreme.dailyrank.ui.theme.GameColor
 import com.sapreme.dailyrank.ui.theme.Spacing
@@ -84,8 +85,10 @@ fun OnboardingContent(
 
             PlayerCard(
                 modifier = Modifier,
-                name = ui.nickname,
-                avatarUrl = ui.avatarUrl
+                player = Player(
+                    uid = "",
+                    nickname = ui.nickname
+                ),
             )
 
             Spacer(Modifier.sizeXL())
