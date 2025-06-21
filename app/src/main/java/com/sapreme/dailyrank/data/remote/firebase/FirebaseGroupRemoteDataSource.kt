@@ -3,9 +3,10 @@ package com.sapreme.dailyrank.data.remote.firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.dto.GroupDto
-import com.sapreme.dailyrank.data.remote.firebase.dto.MemberDto
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -16,65 +17,49 @@ class FirebaseGroupRemoteDataSource(
 ) : GroupRemoteDataSource {
 
     private fun groupDoc(gid: String) = firestore.collection("groups").document(gid)
-    private fun membersColl(gid: String) = groupDoc(gid).collection("members")
 
     override suspend fun createGroup(name: String, creatorId: String): String {
         val gid = firestore.collection("groups").document().id
         val now = Timestamp.now()
 
-        firestore.runBatch { batch ->
-            batch.set(
-                groupDoc(gid),
-                GroupDto(
-                    id = gid,
-                    name = name,
-                    createdBy = creatorId,
-                    createdAt = now,
-                )
+        groupDoc(gid).set(
+            GroupDto(
+                id = gid,
+                name = name,
+                createdBy = creatorId,
+                createdAt = now,
+                memberIds = listOf(creatorId)
             )
-
-            batch.set(
-                membersColl(gid).document(creatorId),
-                MemberDto(
-                    uid = creatorId,
-                    joinedAt = now
-                )
-            )
-        }.await()
+        ).await()
 
         return gid
     }
 
     override suspend fun joinGroup(groupId: String, userId: String) {
-        firestore.runBatch { batch ->
-            batch.update(groupDoc(groupId), "memberUids", FieldValue.arrayUnion(userId))
-
-            batch.set(
-                membersColl(groupId).document(userId), MemberDto(
-                    uid = userId,
-                    joinedAt = Timestamp.now()
-                )
-            )
-        }.await()
+        groupDoc(groupId).update("memberIds", FieldValue.arrayUnion(userId)).await()
     }
 
     override suspend fun leaveGroup(groupId: String, userId: String) {
-        firestore.runBatch { batch ->
-            batch.update(groupDoc(groupId), "memberUids", FieldValue.arrayRemove(userId))
-
-            batch.delete(membersColl(groupId).document(userId))
-        }.await()
+        groupDoc(groupId).update("memberIds", FieldValue.arrayRemove(userId)).await()
     }
+
+    override fun observeGroup(groupId: String): Flow<GroupDto?> =
+        callbackFlow {
+            val reg = groupDoc(groupId)
+                .addSnapshotListener { snap, _ ->
+                    trySend(snap?.toObject<GroupDto>())
+                }
+
+            awaitClose { reg.remove() }
+        }
 
     override fun observeGroups(userId: String): Flow<List<GroupDto>> =
         callbackFlow {
             val reg = firestore.collection("groups")
-                .whereArrayContains("memberUids", userId)
+                .whereArrayContains("memberIds", userId)
                 .addSnapshotListener { snap, _ ->
-                    trySend(snap?.toObjects(GroupDto::class.java) ?: emptyList())
+                    trySend(snap?.toObjects<GroupDto>() ?: emptyList())
                 }
             awaitClose { reg.remove() }
         }
-
-
 }

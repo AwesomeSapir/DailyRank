@@ -11,6 +11,8 @@ interface GroupRemoteDataSource {
 
     suspend fun leaveGroup(groupId: String, userId: String)
 
+    fun observeGroup(groupId: String): Flow<GroupDto?>
+
     fun observeGroups(userId: String): Flow<List<GroupDto>>
 
 }

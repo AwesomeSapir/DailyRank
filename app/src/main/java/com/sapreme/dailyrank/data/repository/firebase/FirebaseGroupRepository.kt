@@ -22,6 +22,9 @@ class FirebaseGroupRepository @Inject constructor(
     override suspend fun leaveGroup(groupId: String, userId: String) =
         remote.leaveGroup(groupId, userId)
 
+    override fun observeGroup(groupId: String): Flow<Group?> =
+        remote.observeGroup(groupId).map { it?.toDomain() }
+
     override fun observeGroups(uid: String): Flow<List<Group>> =
         remote.observeGroups(uid).map { list -> list.map { it.toDomain() } }
 

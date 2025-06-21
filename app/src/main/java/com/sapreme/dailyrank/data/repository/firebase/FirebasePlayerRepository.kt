@@ -17,6 +17,9 @@ class FirebasePlayerRepository @Inject constructor(
     override fun observePlayer(uid: String): Flow<Player?> =
         remote.observePlayer(uid).map { it?.toDomain() }
 
+    override fun observePlayersInGroup(groupId: String): Flow<List<Player>> =
+        remote.observePlayersInGroup(groupId).map { list -> list.map { it.toDomain() } }
+
     override suspend fun playerExists(uid: String): Boolean =
         remote.getPlayer(uid) != null
 

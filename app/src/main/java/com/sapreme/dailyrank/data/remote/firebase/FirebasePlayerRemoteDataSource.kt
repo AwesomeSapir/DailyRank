@@ -2,6 +2,7 @@ package com.sapreme.dailyrank.data.remote.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.dto.PlayerDto
 import kotlinx.coroutines.channels.awaitClose
@@ -20,6 +21,16 @@ class FirebasePlayerRemoteDataSource(
             val reg = doc(uid).addSnapshotListener { snap, _ ->
                 trySend(snap?.toObject<PlayerDto>())
             }
+            awaitClose { reg.remove() }
+        }
+
+    override fun observePlayersInGroup(groupId: String): Flow<List<PlayerDto>> =
+        callbackFlow {
+            val reg = firestore.collection("players")
+                .whereArrayContains("groups", groupId)
+                .addSnapshotListener { snap, _ ->
+                    trySend(snap?.toObjects<PlayerDto>() ?: emptyList())
+                }
             awaitClose { reg.remove() }
         }
 

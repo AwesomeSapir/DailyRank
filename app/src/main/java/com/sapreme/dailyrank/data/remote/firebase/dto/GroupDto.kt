@@ -9,7 +9,8 @@ data class GroupDto(
     @DocumentId var id: String = "",
     var name: String = "",
     var createdBy: String = "",
-    var createdAt: Timestamp = Timestamp.now()
+    var createdAt: Timestamp = Timestamp.now(),
+    var memberIds: List<String> = listOf(createdBy)
 ) {
     fun toDomain() = Group(
         id = id,
