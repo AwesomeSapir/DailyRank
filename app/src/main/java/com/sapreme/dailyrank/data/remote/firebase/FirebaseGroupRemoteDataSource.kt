@@ -35,19 +35,29 @@ class FirebaseGroupRemoteDataSource(
         return gid
     }
 
-    override suspend fun joinGroup(groupId: String, userId: String) {
+    override suspend fun joinGroup(
+        groupId: String,
+        userId: String
+    ) { //TODO Change to enqueueAddMember to allow batch firestore writes
         groupDoc(groupId).update("memberIds", FieldValue.arrayUnion(userId)).await()
     }
 
-    override suspend fun leaveGroup(groupId: String, userId: String) {
+    override suspend fun leaveGroup(
+        groupId: String,
+        userId: String
+    ) { //TODO Change to enqueueRemoveMember to allow batch firestore writes
         groupDoc(groupId).update("memberIds", FieldValue.arrayRemove(userId)).await()
     }
 
     override fun observeGroup(groupId: String): Flow<GroupDto?> =
         callbackFlow {
             val reg = groupDoc(groupId)
-                .addSnapshotListener { snap, _ ->
-                    trySend(snap?.toObject<GroupDto>())
+                .addSnapshotListener { snap, err ->
+                    if (err != null) {
+                        close(err)
+                    } else {
+                        trySend(snap?.toObject<GroupDto>())
+                    }
                 }
 
             awaitClose { reg.remove() }
@@ -57,8 +67,12 @@ class FirebaseGroupRemoteDataSource(
         callbackFlow {
             val reg = firestore.collection("groups")
                 .whereArrayContains("memberIds", userId)
-                .addSnapshotListener { snap, _ ->
-                    trySend(snap?.toObjects<GroupDto>() ?: emptyList())
+                .addSnapshotListener { snap, err ->
+                    if (err != null) {
+                        close(err)
+                    } else {
+                        trySend(snap?.toObjects<GroupDto>() ?: emptyList())
+                    }
                 }
             awaitClose { reg.remove() }
         }

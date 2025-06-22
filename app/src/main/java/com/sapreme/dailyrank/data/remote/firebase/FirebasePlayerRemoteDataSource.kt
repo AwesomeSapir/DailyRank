@@ -1,5 +1,6 @@
 package com.sapreme.dailyrank.data.remote.firebase
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
@@ -28,8 +29,12 @@ class FirebasePlayerRemoteDataSource(
         callbackFlow {
             val reg = firestore.collection("players")
                 .whereArrayContains("groups", groupId)
-                .addSnapshotListener { snap, _ ->
-                    trySend(snap?.toObjects<PlayerDto>() ?: emptyList())
+                .addSnapshotListener { snap, err ->
+                    if (err != null) {
+                        close(err)
+                    } else {
+                        trySend(snap?.toObjects<PlayerDto>().orEmpty())
+                    }
                 }
             awaitClose { reg.remove() }
         }
@@ -39,5 +44,19 @@ class FirebasePlayerRemoteDataSource(
 
     override suspend fun createPlayer(dto: PlayerDto) {
         doc(dto.uid).set(dto).await()
+    }
+
+    override suspend fun joinGroup(
+        uid: String,
+        groupId: String
+    ) { //TODO Change to enqueueJoinGroup to allow batch firestore writes
+        doc(uid).update("groups", FieldValue.arrayUnion(groupId)).await()
+    }
+
+    override suspend fun leaveGroup(
+        uid: String,
+        groupId: String
+    ) { //TODO Change to enqueueLeaveGroup to allow batch firestore writes
+        doc(uid).update("groups", FieldValue.arrayRemove(groupId)).await()
     }
 }
