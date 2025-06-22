@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.model.Player
+import com.sapreme.dailyrank.ui.component.CreateGroupDialog
 import com.sapreme.dailyrank.ui.component.GroupCard
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.viewmodel.GroupsViewModel
@@ -42,8 +43,10 @@ fun GroupsScreen(
 
     GroupsScreenContent(
         groups = groups,
-        playersByGroup = playersByGroup
-    ) { }
+        playersByGroup = playersByGroup,
+        onGroupSelected = {},
+        onGroupCreate = { name -> viewModel.createGroup(name) },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +54,8 @@ fun GroupsScreen(
 fun GroupsScreenContent(
     groups: List<Group>,
     playersByGroup: Map<String, List<Player>>,
-    onGroupSelected: (String) -> Unit
+    onGroupSelected: (String) -> Unit,
+    onGroupCreate: (String) -> Unit,
 ) {
     var showCreateDialog by remember { mutableStateOf(false) }
     var showJoinDialog by remember { mutableStateOf(false) }
@@ -100,7 +104,10 @@ fun GroupsScreenContent(
             }
 
             if (showCreateDialog) {
-                //TODO
+                CreateGroupDialog(
+                    onDismiss = { showCreateDialog = false },
+                    onCreate = onGroupCreate
+                )
             }
 
             if (showJoinDialog) {
@@ -115,7 +122,7 @@ fun GroupsScreenContent(
 fun GroupsScreenPreview() {
     val sampleGroups = listOf(
         Group(id = "1", name = "Alpha Squad", createdBy = "u1"),
-        Group(id = "2", name = "Beta Team", createdBy = "u2")
+        Group(id = "2", name = "Beta Team", createdBy = "u2"),
     )
 
     val samplePlayersByGroup = mapOf(

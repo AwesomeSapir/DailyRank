@@ -58,37 +58,5 @@ class GroupsViewModel @Inject constructor(
             initialValue = emptyMap()
         )
 
-    /*
-    fun createGroup(name: String) = viewModelScope.launch {
-        runCatching {
-            val uid = auth.uid() ?: error("No signed-in user")
-            groupRepo.createGroup(name.trim(), uid)
-        }.onSuccess { gid ->
-            _uiEvents.emit(UiEvent.NavigateToGroup(gid))
-        }.onFailure { e ->
-            _uiEvents.emit(UiEvent.ShowError(e.message ?: "Failed to create group"))
-        }
-    }
-
-    fun joinGroup(groupId: String) = viewModelScope.launch {
-        runCatching {
-            val uid = auth.uid() ?: error("No signed-in user")
-            groupRepo.joinGroup(groupId, uid)
-        }.onSuccess {
-            _uiEvents.emit(UiEvent.NavigateToGroup(groupId))
-        }.onFailure { e ->
-            _uiEvents.emit(UiEvent.ShowError(e.message ?: "Failed to join group"))
-        }
-    }
-
-    fun leaveGroup(groupId: String) = viewModelScope.launch {
-        runCatching {
-            val uid = auth.uid() ?: error("No signed-in user")
-            groupRepo.leaveGroup(groupId, uid)
-        }.onFailure { e ->
-            _uiEvents.emit(UiEvent.ShowError(e.message ?: "Failed to leave group"))
-        }
-        // No nav event; UI can react to groups list shrinking automatically.
-    }*/
 
 }
