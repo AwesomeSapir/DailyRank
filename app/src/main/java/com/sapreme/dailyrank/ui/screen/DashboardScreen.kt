@@ -28,7 +28,7 @@ import com.sapreme.dailyrank.preview.FakeGameResultRepository
 import com.sapreme.dailyrank.ui.component.GameResultCard
 import com.sapreme.dailyrank.ui.component.GameResultRow
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
+import com.sapreme.dailyrank.viewmodel.GameResultViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

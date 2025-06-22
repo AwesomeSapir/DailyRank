@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.viewmodel
+package com.sapreme.dailyrank.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

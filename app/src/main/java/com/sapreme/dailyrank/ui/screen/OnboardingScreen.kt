@@ -31,7 +31,7 @@ import com.sapreme.dailyrank.ui.theme.GameColor
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.theme.sizeM
 import com.sapreme.dailyrank.ui.theme.sizeXL
-import com.sapreme.dailyrank.ui.viewmodel.OnboardingViewModel
+import com.sapreme.dailyrank.viewmodel.OnboardingViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

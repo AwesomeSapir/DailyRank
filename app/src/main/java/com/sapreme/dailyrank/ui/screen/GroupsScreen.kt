@@ -32,7 +32,7 @@ import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.ui.component.CreateGroupDialog
 import com.sapreme.dailyrank.ui.component.GroupCard
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.viewmodel.GroupsViewModel
+import com.sapreme.dailyrank.viewmodel.GroupsViewModel
 
 @Composable
 fun GroupsScreen(

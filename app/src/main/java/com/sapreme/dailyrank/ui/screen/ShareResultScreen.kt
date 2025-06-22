@@ -22,8 +22,8 @@ import com.sapreme.dailyrank.preview.FakeGameResultRepository
 import com.sapreme.dailyrank.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.component.GameResultCard
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
-import com.sapreme.dailyrank.ui.viewmodel.SubmissionState
+import com.sapreme.dailyrank.viewmodel.GameResultViewModel
+import com.sapreme.dailyrank.viewmodel.SubmissionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

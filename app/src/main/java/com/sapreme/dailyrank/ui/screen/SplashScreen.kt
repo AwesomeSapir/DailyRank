@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sapreme.dailyrank.ui.viewmodel.Destination
-import com.sapreme.dailyrank.ui.viewmodel.SplashViewModel
+import com.sapreme.dailyrank.viewmodel.Destination
+import com.sapreme.dailyrank.viewmodel.SplashViewModel
 
 @Composable
 fun SplashScreen(
