@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.GroupAdd
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -33,10 +32,11 @@ import com.sapreme.dailyrank.ui.component.CreateGroupDialog
 import com.sapreme.dailyrank.ui.component.GroupCard
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.viewmodel.GroupsViewModel
+import timber.log.Timber
 
 @Composable
 fun GroupsScreen(
-    viewModel: GroupsViewModel = hiltViewModel()
+    viewModel: GroupsViewModel = hiltViewModel(),
 ) {
     val groups by viewModel.groups.collectAsState()
     val playersByGroup by viewModel.playersByGroup.collectAsState()
@@ -45,17 +45,14 @@ fun GroupsScreen(
         groups = groups,
         playersByGroup = playersByGroup,
         onGroupSelected = {},
-        onGroupCreate = { name -> viewModel.createGroup(name) },
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupsScreenContent(
     groups: List<Group>,
     playersByGroup: Map<String, List<Player>>,
     onGroupSelected: (String) -> Unit,
-    onGroupCreate: (String) -> Unit,
 ) {
     var showCreateDialog by remember { mutableStateOf(false) }
     var showJoinDialog by remember { mutableStateOf(false) }
@@ -106,7 +103,8 @@ fun GroupsScreenContent(
             if (showCreateDialog) {
                 CreateGroupDialog(
                     onDismiss = { showCreateDialog = false },
-                    onCreate = onGroupCreate
+                    onSuccess = { showCreateDialog = false },
+                    onError = { Timber.e(it) }
                 )
             }
 
@@ -142,6 +140,6 @@ fun GroupsScreenPreview() {
     GroupsScreenContent(
         groups = sampleGroups,
         playersByGroup = samplePlayersByGroup,
-        onGroupSelected = {}
+        onGroupSelected = {},
     )
 }

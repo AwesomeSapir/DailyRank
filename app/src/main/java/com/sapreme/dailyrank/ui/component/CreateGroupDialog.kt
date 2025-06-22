@@ -1,6 +1,9 @@
 package com.sapreme.dailyrank.ui.component
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -8,31 +11,56 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.sapreme.dailyrank.ui.util.validation.FieldState
+import com.sapreme.dailyrank.ui.util.validation.ValidationResult
+import com.sapreme.dailyrank.viewmodel.CreateGroupViewModel
 
 @Composable
 fun CreateGroupDialog(
+    viewModel: CreateGroupViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
-    onCreate: (String) -> Unit
+    onSuccess: () -> Unit,
+    onError: (Throwable) -> Unit
+) {
+    val state by viewModel.groupNameField.state
+
+    CreateGroupDialogContent(
+        onDismiss = onDismiss,
+        state = state,
+        onCreate = {
+            viewModel.createGroup(
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        },
+        onGroupNameChange = viewModel::onGroupNameChanged
+    )
+}
+
+@Composable
+fun CreateGroupDialogContent(
+    state: FieldState,
+    onDismiss: () -> Unit = {},
+    onCreate: () -> Unit = {},
+    onGroupNameChange: (String) -> Unit = {}
 ) {
     val focus = LocalFocusManager.current
-    var name by remember { mutableStateOf("") }
 
     AlertDialog(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.ime),
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                enabled = name.isNotBlank(),
+                enabled = state.validation is ValidationResult.Valid,
                 onClick = {
                     focus.clearFocus()
-                    onCreate(name)
+                    onCreate()
                 }
             ) { Text("Create") }
         },
@@ -50,9 +78,13 @@ fun CreateGroupDialog(
         },
         text = {
             OutlinedTextField(
-                value = name,
-                onValueChange = {
-                    if (it.length <= 50) name = it
+                value = state.text,
+                onValueChange = onGroupNameChange,
+                isError = state.validation is ValidationResult.Invalid,
+                supportingText = {
+                    if (state.validation is ValidationResult.Invalid) {
+                        Text(text = (state.validation as ValidationResult.Invalid).error)
+                    }
                 },
                 singleLine = true,
                 label = { Text("Group name") },
@@ -64,8 +96,20 @@ fun CreateGroupDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun CreateGroupDialogPreview() {
+fun ValidCreateGroupDialogPreview() {
     MaterialTheme {
-        CreateGroupDialog(onDismiss = {}, onCreate = {})
+        CreateGroupDialogContent(
+            state = FieldState("Group Name", ValidationResult.Valid),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InvalidCreateGroupDialogPreview() {
+    MaterialTheme {
+        CreateGroupDialogContent(
+            state = FieldState("Group Name", ValidationResult.Invalid("Error message")),
+        )
     }
 }
