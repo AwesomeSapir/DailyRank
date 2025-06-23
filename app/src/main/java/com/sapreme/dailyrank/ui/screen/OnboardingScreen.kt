@@ -64,7 +64,7 @@ fun OnboardingContent(
     onContinue: () -> Unit,
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier
@@ -86,7 +86,7 @@ fun OnboardingContent(
             PlayerCard(
                 modifier = Modifier,
                 player = Player(
-                    uid = "",
+                    uid = ui.uid,
                     nickname = ui.nickname
                 ),
             )

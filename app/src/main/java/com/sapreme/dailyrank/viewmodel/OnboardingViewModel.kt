@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.PlayerRepository
-import com.sapreme.dailyrank.ui.util.avatarUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +22,7 @@ class OnboardingViewModel @Inject constructor(
 
     data class UiState(
         val nickname: String = "",
-        val avatarUrl: String = "",
+        val uid: String = "",
         val isSaving: Boolean = false,
         val error: String? = null
     ) {
@@ -39,9 +38,9 @@ class OnboardingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val uid = authManager.uid()
+            val uid = authManager.uid()!!
             _state.value = _state.value.copy(
-                avatarUrl = avatarUrl(uid ?: "guest")
+                uid = uid
             )
         }
     }
