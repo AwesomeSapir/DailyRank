@@ -28,7 +28,7 @@ class FirebaseGroupRemoteDataSource(
                 name = name,
                 createdBy = creatorId,
                 createdAt = now,
-                memberIds = listOf(creatorId)
+                memberIds = emptyList()
             )
         ).await()
 
