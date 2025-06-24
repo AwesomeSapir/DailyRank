@@ -3,11 +3,13 @@ package com.sapreme.dailyrank.data.di
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
 import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.InviteRemoteDataSource
 import com.sapreme.dailyrank.data.remote.MembershipRemoteDataSource
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.firebase.FirebaseInviteRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseMembershipRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebasePlayerRemoteDataSource
 import com.sapreme.dailyrank.data.repository.GameResultRepository
@@ -63,5 +65,10 @@ object RepositoryModule {
     fun provideMembershipRemoteDataSource(
         firestore: FirebaseFirestore
     ): MembershipRemoteDataSource = FirebaseMembershipRemoteDataSource(firestore)
+
+    @Provides
+    fun provideInviteRemoteDataSource(
+        firestore: FirebaseFirestore
+    ): InviteRemoteDataSource = FirebaseInviteRemoteDataSource(firestore)
 
 }
