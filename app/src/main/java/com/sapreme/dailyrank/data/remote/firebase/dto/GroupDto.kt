@@ -3,7 +3,7 @@ package com.sapreme.dailyrank.data.remote.firebase.dto
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.sapreme.dailyrank.data.model.Group
-import com.sapreme.dailyrank.ui.util.toLocalDate
+import com.sapreme.dailyrank.util.toLocalDate
 
 data class GroupDto(
     @DocumentId var id: String = "",

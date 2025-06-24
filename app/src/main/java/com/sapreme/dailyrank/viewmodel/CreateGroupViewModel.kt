@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.GroupRepository
-import com.sapreme.dailyrank.ui.util.validation.NotEmptyRule
-import com.sapreme.dailyrank.ui.util.validation.RangeLengthRule
-import com.sapreme.dailyrank.ui.util.validation.ValidatedField
-import com.sapreme.dailyrank.ui.util.validation.ValidationResult
+import com.sapreme.dailyrank.util.validation.NotEmptyRule
+import com.sapreme.dailyrank.util.validation.RangeLengthRule
+import com.sapreme.dailyrank.util.validation.ValidatedField
+import com.sapreme.dailyrank.util.validation.ValidationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.util
+package com.sapreme.dailyrank.util
 
 import com.google.firebase.Timestamp
 import java.time.LocalDate

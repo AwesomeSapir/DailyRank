@@ -2,7 +2,7 @@ package com.sapreme.dailyrank.data.remote.firebase.dto
 
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.model.Player
-import com.sapreme.dailyrank.ui.util.toFirestoreTimestamp
+import com.sapreme.dailyrank.util.toFirestoreTimestamp
 
 fun Player.toDto(): PlayerDto = PlayerDto(
     uid = uid,

@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sapreme.dailyrank.ui.util.validation.FieldState
-import com.sapreme.dailyrank.ui.util.validation.ValidationResult
+import com.sapreme.dailyrank.util.validation.FieldState
+import com.sapreme.dailyrank.util.validation.ValidationResult
 import com.sapreme.dailyrank.viewmodel.CreateGroupViewModel
 
 @Composable

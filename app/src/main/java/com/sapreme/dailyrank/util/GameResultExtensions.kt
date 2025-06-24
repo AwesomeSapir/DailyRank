@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.util
+package com.sapreme.dailyrank.util
 
 import com.sapreme.dailyrank.R
 import com.sapreme.dailyrank.data.model.GameResult

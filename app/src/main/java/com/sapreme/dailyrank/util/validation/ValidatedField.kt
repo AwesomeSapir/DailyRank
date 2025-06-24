@@ -1,8 +1,7 @@
-package com.sapreme.dailyrank.ui.util.validation
+package com.sapreme.dailyrank.util.validation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class ValidatedField(
     private val rules: List<ValidationRule>,

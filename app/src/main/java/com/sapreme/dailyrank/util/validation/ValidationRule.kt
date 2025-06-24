@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.util.validation
+package com.sapreme.dailyrank.util.validation
 
 interface ValidationRule {
     fun validate(input: String): ValidationResult

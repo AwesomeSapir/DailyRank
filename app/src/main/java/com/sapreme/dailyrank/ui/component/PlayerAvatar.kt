@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.sapreme.dailyrank.R
 import com.sapreme.dailyrank.data.model.Player
-import com.sapreme.dailyrank.ui.util.avatarUrl
+import com.sapreme.dailyrank.util.avatarUrl
 
 @Composable
 fun PlayerAvater(

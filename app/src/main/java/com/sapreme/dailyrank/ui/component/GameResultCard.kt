@@ -34,7 +34,7 @@ import com.sapreme.dailyrank.ui.theme.Typography
 import com.sapreme.dailyrank.ui.theme.colorPalette
 import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.theme.sizeM
-import com.sapreme.dailyrank.ui.util.puzzleLabel
+import com.sapreme.dailyrank.util.puzzleLabel
 import java.time.format.DateTimeFormatter
 
 @Composable

@@ -21,7 +21,7 @@ import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.ui.theme.sizeL
-import com.sapreme.dailyrank.ui.util.iconRes
+import com.sapreme.dailyrank.util.iconRes
 
 @Composable
 fun GameResultRow(

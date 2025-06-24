@@ -1,20 +1,17 @@
 package com.sapreme.dailyrank.data.remote.firebase
 
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.model.GameResultFilter
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
-import com.sapreme.dailyrank.ui.util.toFirestoreTimestamp
-import com.sapreme.dailyrank.ui.util.toLocalDate
+import com.sapreme.dailyrank.util.toFirestoreTimestamp
+import com.sapreme.dailyrank.util.toLocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.time.LocalDate
-import java.time.ZoneOffset
 import kotlin.time.Duration
 
 class FirebaseGameResultRemoteDataSource (
