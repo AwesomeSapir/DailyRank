@@ -1,5 +1,6 @@
 package com.sapreme.dailyrank.ui.screen
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -80,7 +81,9 @@ fun MainScreen() {
         NavHost(
             navController = tabsController,
             startDestination = Route.Dashboard.route,
-            modifier = Modifier.padding(inner)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(inner)
         ) {
             mainNavGraph()
         }

@@ -25,8 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.FilterKey
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.FakeGameResultRepository
-import com.sapreme.dailyrank.ui.component.GameResultCard
-import com.sapreme.dailyrank.ui.component.GameResultRow
+import com.sapreme.dailyrank.ui.component.feature.GameResultCard
+import com.sapreme.dailyrank.ui.component.feature.GameResultRow
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.viewmodel.GameResultViewModel
 import java.time.LocalDate
@@ -38,7 +38,6 @@ fun DashboardScreen(
     modifier: Modifier = Modifier,
     viewModel: GameResultViewModel = hiltViewModel()
 ) {
-
 
     val todayResults by viewModel.getResultsFor(FilterKey.Today).collectAsState()
     val weeklyResults = viewModel.weeklyResultsByType.mapValues { (type, flow) ->
@@ -55,7 +54,7 @@ fun DashboardScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(Spacing.xl)
             ) {

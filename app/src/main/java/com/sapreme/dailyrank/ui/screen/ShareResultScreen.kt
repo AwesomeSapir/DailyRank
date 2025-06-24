@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.FakeGameResultRepository
 import com.sapreme.dailyrank.preview.GameResultProvider
-import com.sapreme.dailyrank.ui.component.GameResultCard
+import com.sapreme.dailyrank.ui.component.feature.GameResultCard
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.viewmodel.GameResultViewModel
 import com.sapreme.dailyrank.viewmodel.SubmissionState
