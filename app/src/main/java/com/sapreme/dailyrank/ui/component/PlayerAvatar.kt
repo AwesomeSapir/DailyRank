@@ -12,7 +12,7 @@ import com.sapreme.dailyrank.data.model.Player
 import com.sapreme.dailyrank.util.avatarUrl
 
 @Composable
-fun PlayerAvater(
+fun PlayerAvatar(
     modifier: Modifier = Modifier,
     player: Player
 ) {
@@ -27,8 +27,8 @@ fun PlayerAvater(
 
 @Preview(showBackground = true)
 @Composable
-fun PlayerAvaterPreview() {
-    PlayerAvater(
+fun PlayerAvatarPreview() {
+    PlayerAvatar(
         modifier = Modifier.size(64.dp),
         player = Player(
             uid = "u1",

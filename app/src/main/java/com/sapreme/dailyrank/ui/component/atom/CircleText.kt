@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.component
+package com.sapreme.dailyrank.ui.component.atom
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

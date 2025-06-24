@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.component
+package com.sapreme.dailyrank.ui.component.feature
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sapreme.dailyrank.data.model.Player
+import com.sapreme.dailyrank.ui.component.PlayerAvatar
 import com.sapreme.dailyrank.ui.theme.Spacing
 
 @Composable
@@ -31,7 +32,7 @@ fun PlayerCard(modifier: Modifier = Modifier, player: Player) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.l)
         ) {
-            PlayerAvater(
+            PlayerAvatar(
                 player = player,
                 modifier = Modifier.size(64.dp)
             )

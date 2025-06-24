@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.component
+package com.sapreme.dailyrank.ui.component.feature
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

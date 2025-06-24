@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.component
+package com.sapreme.dailyrank.ui.component.dialog
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.util.validation.FieldState
@@ -69,7 +70,9 @@ fun CreateGroupDialogContent(
         },
         title = {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = "Create a new group",
+                textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Bold,

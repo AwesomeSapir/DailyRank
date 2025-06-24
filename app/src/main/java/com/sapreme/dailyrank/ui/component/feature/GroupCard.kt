@@ -1,4 +1,4 @@
-package com.sapreme.dailyrank.ui.component
+package com.sapreme.dailyrank.ui.component.feature
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.model.Player
+import com.sapreme.dailyrank.ui.component.PlayerAvatar
+import com.sapreme.dailyrank.ui.component.atom.CircleText
 import com.sapreme.dailyrank.ui.theme.Spacing
 
 @Composable
@@ -52,7 +54,7 @@ fun GroupCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 playerList.take(5).forEach { player ->
-                    PlayerAvater(
+                    PlayerAvatar(
                         player = player,
                         modifier = Modifier.size(32.dp)
                     )
