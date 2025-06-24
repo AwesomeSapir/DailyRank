@@ -4,5 +4,5 @@ interface InviteRemoteDataSource {
 
     suspend fun createCode(groupId: String): String
     suspend fun resolve(code: String): String
-
+    suspend fun fetchCode(groupId: String): String
 }

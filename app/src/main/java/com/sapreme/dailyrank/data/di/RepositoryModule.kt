@@ -47,8 +47,9 @@ object RepositoryModule {
     @Provides
     fun provideGroupRepository(
         remoteDataSource: GroupRemoteDataSource,
-        remoteMembership: MembershipRemoteDataSource
-    ): GroupRepository = FirebaseGroupRepository(remoteDataSource, remoteMembership)
+        remoteMembership: MembershipRemoteDataSource,
+        remoteInvite: InviteRemoteDataSource
+    ): GroupRepository = FirebaseGroupRepository(remoteDataSource, remoteMembership, remoteInvite)
 
     @Provides
     fun provideGameResultRemoteDataSource(

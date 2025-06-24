@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,8 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.model.Player
-import com.sapreme.dailyrank.ui.component.CreateGroupDialog
-import com.sapreme.dailyrank.ui.component.GroupCard
+import com.sapreme.dailyrank.ui.component.dialog.CreateGroupDialog
+import com.sapreme.dailyrank.ui.component.dialog.InviteDialog
+import com.sapreme.dailyrank.ui.component.feature.GroupCard
 import com.sapreme.dailyrank.ui.theme.Spacing
 import com.sapreme.dailyrank.viewmodel.GroupsViewModel
 import timber.log.Timber
@@ -40,19 +42,29 @@ fun GroupsScreen(
 ) {
     val groups by viewModel.groups.collectAsState()
     val playersByGroup by viewModel.playersByGroup.collectAsState()
+    var showDialogFor by rememberSaveable { mutableStateOf<Group?>(null) }
 
     GroupsScreenContent(
         groups = groups,
         playersByGroup = playersByGroup,
-        onGroupSelected = {},
+        onGroupSelected = { group ->
+            showDialogFor = group
+        },
     )
+
+    showDialogFor?.let { group ->
+        InviteDialog(
+            group = group,
+            onDismiss = { showDialogFor = null },
+        )
+    }
 }
 
 @Composable
 fun GroupsScreenContent(
     groups: List<Group>,
     playersByGroup: Map<String, List<Player>>,
-    onGroupSelected: (String) -> Unit,
+    onGroupSelected: (Group) -> Unit,
 ) {
     var showCreateDialog by remember { mutableStateOf(false) }
     var showJoinDialog by remember { mutableStateOf(false) }
@@ -94,7 +106,7 @@ fun GroupsScreenContent(
                         GroupCard(
                             group = group,
                             playerList = playerList,
-                            onClick = { onGroupSelected(group.id) }
+                            onClick = { onGroupSelected(group) }
                         )
                     }
                 }

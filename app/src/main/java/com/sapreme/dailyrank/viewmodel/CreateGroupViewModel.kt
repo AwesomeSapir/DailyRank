@@ -26,7 +26,7 @@ class CreateGroupViewModel @Inject constructor(
     )
 
     fun onGroupNameChanged(input: String) {
-        groupNameField.onTextChanged(input.trim())
+        groupNameField.onTextChanged(input)
     }
 
     fun createGroup(onSuccess: () -> Unit, onError: (Throwable) -> Unit) {
@@ -35,7 +35,7 @@ class CreateGroupViewModel @Inject constructor(
                 try {
                     val uid = auth.uid() ?: return@launch
                     groupRepo.createGroup(
-                        name = groupNameField.state.value.text,
+                        name = groupNameField.state.value.text.trim(),
                         creatorId = uid
                     )
                     onSuccess()

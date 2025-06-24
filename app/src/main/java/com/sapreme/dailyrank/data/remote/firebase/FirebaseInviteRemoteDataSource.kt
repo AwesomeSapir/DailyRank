@@ -11,6 +11,7 @@ class FirebaseInviteRemoteDataSource @Inject constructor(
 ) : InviteRemoteDataSource {
 
     private fun codeDoc(code: String) = firestore.collection("codes").document(code)
+    private fun groupDoc(groupId: String) = firestore.collection("groups").document(groupId)
 
     override suspend fun createCode(groupId: String): String =
         firestore.runTransaction { transaction ->
@@ -22,10 +23,15 @@ class FirebaseInviteRemoteDataSource @Inject constructor(
                 )
             } while (transaction.get(codeDoc(code)).exists())
             transaction.set(codeDoc(code), mapOf("groupId" to groupId))
+            transaction.update(groupDoc(groupId), "accessCode", code)
             return@runTransaction code
         }.await()
 
     override suspend fun resolve(code: String): String =
         codeDoc(code).get().await().getString("groupId")
+            ?: throw IllegalArgumentException("Code not found")
+
+    override suspend fun fetchCode(groupId: String): String =
+        groupDoc(groupId).get().await().getString("accessCode")
             ?: throw IllegalArgumentException("Code not found")
 }
