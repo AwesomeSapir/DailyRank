@@ -1,21 +1,14 @@
 package com.sapreme.dailyrank.viewmodel
 
-import android.content.Context
-import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.sapreme.dailyrank.R
 import com.sapreme.dailyrank.data.auth.AuthResult
 import com.sapreme.dailyrank.data.auth.AuthStatus
 import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
