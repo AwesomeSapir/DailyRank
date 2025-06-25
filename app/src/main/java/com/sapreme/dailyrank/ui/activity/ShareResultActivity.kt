@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.sapreme.dailyrank.ui.screen.ShareResultScreen
-import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
+import com.sapreme.dailyrank.viewmodel.GameResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

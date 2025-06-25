@@ -1,23 +1,36 @@
 package com.sapreme.dailyrank.data.repository.firebase
 
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
+import com.sapreme.dailyrank.data.model.Group
+import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
+import com.sapreme.dailyrank.data.remote.MembershipRemoteDataSource
 import com.sapreme.dailyrank.data.repository.GroupRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FirebaseGroupRepository @Inject constructor(
-    private val remote: FirebaseGroupRemoteDataSource
+    private val remote: GroupRemoteDataSource,
+    private val remoteMembership: MembershipRemoteDataSource
 ) : GroupRepository {
 
     override suspend fun createGroup(name: String, creatorId: String): String {
-        return remote.createGroup(name, creatorId)
+        val groupId = remote.createGroup(name, creatorId)
+        remoteMembership.joinGroup(groupId, creatorId)
+        return groupId
     }
 
-    override suspend fun joinGroup(groupId: String, userId: String) {
-        remote.joinGroup(groupId, userId)
-    }
+    override suspend fun joinGroup(groupId: String, userId: String) =
+        remoteMembership.joinGroup(groupId, userId)
 
-    override fun getGroups(userId: String) = remote.observeUserGroups(userId)
+    override suspend fun leaveGroup(groupId: String, userId: String) =
+        remoteMembership.leaveGroup(groupId, userId)
+
+    override fun observeGroup(groupId: String): Flow<Group?> =
+        remote.observeGroup(groupId).map { it?.toDomain() }
+
+    override fun observeGroups(uid: String): Flow<List<Group>> =
+        remote.observeGroups(uid).map { list -> list.map { it.toDomain() } }
 
 }

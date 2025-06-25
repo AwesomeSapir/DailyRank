@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "780214999626-86cmnb65i06cmlccfi1bviheb4ujfr05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sapreme.dailyrank",
+            "certificate_hash": "a9951e472f93956c60b433dd06b01feff629675c"
+          }
+        },
+        {
           "client_id": "780214999626-md8ft133fu4t03v1g45opsrki2mviscc.apps.googleusercontent.com",
           "client_type": 3
         }

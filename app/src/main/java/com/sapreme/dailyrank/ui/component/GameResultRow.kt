@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.GameResultProvider
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.theme.sizeM
+import com.sapreme.dailyrank.ui.theme.sizeL
 import com.sapreme.dailyrank.ui.util.iconRes
 
 @Composable
@@ -37,7 +37,7 @@ fun GameResultRow(
             Image(
                 painter = painterResource(id = type.iconRes()),
                 contentDescription = "${type.name} icon",
-                modifier = Modifier.sizeM()
+                modifier = Modifier.sizeL()
             )
             Text(
                 text = type.toString(),

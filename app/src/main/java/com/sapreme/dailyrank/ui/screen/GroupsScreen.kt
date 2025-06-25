@@ -1,33 +1,63 @@
 package com.sapreme.dailyrank.ui.screen
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.GroupAdd
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.Group
+import com.sapreme.dailyrank.data.model.Player
+import com.sapreme.dailyrank.ui.component.CreateGroupDialog
+import com.sapreme.dailyrank.ui.component.GroupCard
+import com.sapreme.dailyrank.ui.theme.Spacing
+import com.sapreme.dailyrank.viewmodel.GroupsViewModel
+import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GroupsScreen(
+    viewModel: GroupsViewModel = hiltViewModel(),
+) {
+    val groups by viewModel.groups.collectAsState()
+    val playersByGroup by viewModel.playersByGroup.collectAsState()
+
+    GroupsScreenContent(
+        groups = groups,
+        playersByGroup = playersByGroup,
+        onGroupSelected = {},
+    )
+}
+
 @Composable
 fun GroupsScreenContent(
     groups: List<Group>,
-    onGroupSelected: (String) -> Unit
+    playersByGroup: Map<String, List<Player>>,
+    onGroupSelected: (String) -> Unit,
 ) {
     var showCreateDialog by remember { mutableStateOf(false) }
     var showJoinDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(title = { Text("Groups") })
-        },
         floatingActionButton = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -57,41 +87,31 @@ fun GroupsScreenContent(
             } else {
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(Spacing.l)
                 ) {
                     items(groups) { group ->
-                        GroupItem(group, onClick = { onGroupSelected(group.id) })
+                        val playerList = playersByGroup[group.id] ?: emptyList()
+                        GroupCard(
+                            group = group,
+                            playerList = playerList,
+                            onClick = { onGroupSelected(group.id) }
+                        )
                     }
                 }
             }
 
             if (showCreateDialog) {
-
+                CreateGroupDialog(
+                    onDismiss = { showCreateDialog = false },
+                    onSuccess = { showCreateDialog = false },
+                    onError = { Timber.e(it) }
+                )
             }
 
             if (showJoinDialog) {
-
+                //TODO
             }
         }
-    }
-}
-
-@Composable
-private fun GroupItem(
-    group: Group,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        ListItem(
-            headlineContent = { Text(group.name) },
-            supportingContent = { Text("Members: ${group.members.size}") }
-        )
     }
 }
 
@@ -99,11 +119,27 @@ private fun GroupItem(
 @Composable
 fun GroupsScreenPreview() {
     val sampleGroups = listOf(
-        Group(id = "1", name = "Alpha Squad", createdBy = "user1", members = listOf("user1", "user2")),
-        Group(id = "2", name = "Beta Team", createdBy = "user2", members = listOf("user2"))
+        Group(id = "1", name = "Alpha Squad", createdBy = "u1"),
+        Group(id = "2", name = "Beta Team", createdBy = "u2"),
     )
+
+    val samplePlayersByGroup = mapOf(
+        // ── Alpha Squad members ───────────────────────
+        "1" to listOf(
+            Player(uid = "u1", nickname = "Alice"),
+            Player(uid = "u2", nickname = "Bob"),
+            Player(uid = "u3", nickname = "Charlie"),
+        ),
+        // ── Beta Team members ─────────────────────────
+        "2" to listOf(
+            Player(uid = "u2", nickname = "Dana"),
+            Player(uid = "u1", nickname = "Eli"),
+        )
+    )
+
     GroupsScreenContent(
         groups = sampleGroups,
-        onGroupSelected = {}
+        playersByGroup = samplePlayersByGroup,
+        onGroupSelected = {},
     )
 }

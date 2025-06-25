@@ -7,6 +7,8 @@ import com.google.firebase.firestore.Query
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.model.GameResultFilter
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
+import com.sapreme.dailyrank.ui.util.toFirestoreTimestamp
+import com.sapreme.dailyrank.ui.util.toLocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -130,17 +132,6 @@ class FirebaseGameResultRemoteDataSource (
 
             else -> null
         }
-    }
-
-    private fun LocalDate.toFirestoreTimestamp(): Timestamp {
-        val instant = this.atStartOfDay().toInstant(ZoneOffset.UTC)
-        return Timestamp(instant.epochSecond, 0)
-    }
-
-    private fun Timestamp.toLocalDate(): LocalDate {
-        return this.toDate().toInstant()
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
     }
 
 }

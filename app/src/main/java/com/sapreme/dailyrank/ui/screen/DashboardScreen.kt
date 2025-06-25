@@ -21,19 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sapreme.dailyrank.data.model.FilterKey
 import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.preview.FakeGameResultRepository
 import com.sapreme.dailyrank.ui.component.GameResultCard
 import com.sapreme.dailyrank.ui.component.GameResultRow
 import com.sapreme.dailyrank.ui.theme.Spacing
-import com.sapreme.dailyrank.ui.viewmodel.GameResultViewModel
+import com.sapreme.dailyrank.viewmodel.GameResultViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewModel) {
+fun DashboardScreen(
+    modifier: Modifier = Modifier,
+    viewModel: GameResultViewModel = hiltViewModel()
+) {
+
 
     val todayResults by viewModel.getResultsFor(FilterKey.Today).collectAsState()
     val weeklyResults = viewModel.weeklyResultsByType.mapValues { (type, flow) ->
@@ -51,7 +56,6 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewMode
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = Spacing.l)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(Spacing.xl)
             ) {
@@ -61,6 +65,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: GameResultViewMode
             }
         }
     }
+
 }
 
 @Composable
