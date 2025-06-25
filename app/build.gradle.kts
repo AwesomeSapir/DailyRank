@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.ohteepee)
     testImplementation(libs.junitparams)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)
