@@ -3,7 +3,7 @@ package com.sapreme.dailyrank.parser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sapreme.dailyrank.data.model.GameResult
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
 import com.sapreme.dailyrank.data.repository.firebase.FirebaseGameResultRepository
 import com.sapreme.dailyrank.parser.cases.connectionsCases

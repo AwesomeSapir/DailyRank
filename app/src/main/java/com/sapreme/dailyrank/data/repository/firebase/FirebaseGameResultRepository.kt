@@ -4,7 +4,7 @@ import com.sapreme.dailyrank.data.model.GameResult
 import com.sapreme.dailyrank.data.model.GameResultFilter
 import com.sapreme.dailyrank.data.parser.GameResultParserFactory
 import com.sapreme.dailyrank.data.remote.GameResultRemoteDataSource
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.GameResultRepository
 import timber.log.Timber
 import java.time.LocalDate
