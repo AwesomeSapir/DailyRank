@@ -2,18 +2,18 @@ package com.sapreme.dailyrank.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.AuthStatus
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.PlayerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-enum class Destination { ONBOARDING, MAIN }
+enum class Destination { ONBOARDING, MAIN, SIGN_IN }
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
@@ -24,21 +24,22 @@ class SplashViewModel @Inject constructor(
     private val _destination = MutableStateFlow<Destination?>(null)
     val destination: StateFlow<Destination?> = _destination.asStateFlow()
 
-
     init {
         viewModelScope.launch {
-            authManager.ensureAnonymousSignIn()
-
-            val user = authManager.authState.filterNotNull().first()
-
-            val profileExists = playerRepository.playerExists(user.uid)
-
-            _destination.value =
-                if (profileExists) {
-                    Destination.MAIN
-                } else {
-                    Destination.ONBOARDING
+            when (val status = authManager.authState.first()) {
+                is AuthStatus.Authenticated -> {
+                    val profileExists = playerRepository.playerExists(status.uid)
+                    _destination.value =
+                        if (profileExists) {
+                            Destination.MAIN
+                        } else {
+                            Destination.ONBOARDING
+                        }
                 }
+
+                AuthStatus.Unauthenticated ->
+                    _destination.value = Destination.SIGN_IN
+            }
         }
     }
 

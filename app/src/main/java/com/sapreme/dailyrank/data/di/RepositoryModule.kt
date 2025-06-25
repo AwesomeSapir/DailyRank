@@ -6,7 +6,7 @@ import com.sapreme.dailyrank.data.remote.GroupRemoteDataSource
 import com.sapreme.dailyrank.data.remote.InviteRemoteDataSource
 import com.sapreme.dailyrank.data.remote.MembershipRemoteDataSource
 import com.sapreme.dailyrank.data.remote.PlayerRemoteDataSource
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGameResultRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseGroupRemoteDataSource
 import com.sapreme.dailyrank.data.remote.firebase.FirebaseInviteRemoteDataSource

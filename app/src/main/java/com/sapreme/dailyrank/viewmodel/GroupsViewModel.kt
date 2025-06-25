@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sapreme.dailyrank.data.model.Group
 import com.sapreme.dailyrank.data.model.Player
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.GroupRepository
 import com.sapreme.dailyrank.data.repository.PlayerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +29,7 @@ class GroupsViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val groupsFlow: Flow<List<Group>> =
         auth.authState.filterNotNull()
-            .flatMapLatest { groupRepo.observeGroups(it.uid) }
+            .flatMapLatest { groupRepo.observeGroups(auth.uid() ?: "") }
 
     val groups: StateFlow<List<Group>> =
         groupsFlow

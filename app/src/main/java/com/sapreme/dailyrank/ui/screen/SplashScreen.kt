@@ -18,6 +18,7 @@ fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
     onMain: () -> Unit,
     onOnboarding: () -> Unit,
+    onSignIn: () -> Unit
 ) {
     val destination by viewModel.destination.collectAsState()
 
@@ -33,6 +34,7 @@ fun SplashScreen(
             when (destination) {
                 Destination.ONBOARDING -> onOnboarding()
                 Destination.MAIN -> onMain()
+                Destination.SIGN_IN -> onSignIn()
                 else -> {}
             }
         }

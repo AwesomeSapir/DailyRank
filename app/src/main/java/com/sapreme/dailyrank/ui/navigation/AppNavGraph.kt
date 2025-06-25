@@ -9,6 +9,7 @@ import com.sapreme.dailyrank.ui.screen.DashboardScreen
 import com.sapreme.dailyrank.ui.screen.GroupsScreen
 import com.sapreme.dailyrank.ui.screen.MainScreen
 import com.sapreme.dailyrank.ui.screen.OnboardingScreen
+import com.sapreme.dailyrank.ui.screen.SignInScreen
 import com.sapreme.dailyrank.ui.screen.SplashScreen
 
 
@@ -29,6 +30,18 @@ fun AppNavGraph(navController: NavHostController) {
                     navController.navigate(Route.Onboarding.route) {
                         popUpTo(Route.Splash.route) { inclusive = true }
                     }
+                },
+                onSignIn = {
+                    navController.navigate(Route.SignIn.route) {
+                        popUpTo(Route.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(Route.SignIn.route) {
+            SignInScreen(
+                onSignedIn = {
+                    navController.popBackStack(Route.Splash.route, inclusive = false)
                 }
             )
         }

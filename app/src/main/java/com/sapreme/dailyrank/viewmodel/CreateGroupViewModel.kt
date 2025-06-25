@@ -2,7 +2,7 @@ package com.sapreme.dailyrank.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.GroupRepository
 import com.sapreme.dailyrank.util.validation.NotEmptyRule
 import com.sapreme.dailyrank.util.validation.RangeLengthRule

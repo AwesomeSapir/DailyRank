@@ -3,7 +3,7 @@ package com.sapreme.dailyrank.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sapreme.dailyrank.data.model.Player
-import com.sapreme.dailyrank.data.remote.firebase.FirebaseAuthManager
+import com.sapreme.dailyrank.data.auth.FirebaseAuthManager
 import com.sapreme.dailyrank.data.repository.PlayerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
