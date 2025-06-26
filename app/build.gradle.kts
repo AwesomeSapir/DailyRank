@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.ohteepee)
     testImplementation(libs.junitparams)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)
